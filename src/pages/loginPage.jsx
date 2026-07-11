@@ -16,8 +16,7 @@ export default function LoginPage () {
     try{
         const response = await axios.post('/api/token/', {username : values.username, password: values.password})
         const token = response.data.access
-        axios.defaults.headers.common = { 'Authorization' : `bearer ${token}`}
-        console.log(axios.defaults.headers.common)
+        axios.defaults.headers.common = { 'Authorization' : `Bearer ${token}`}
         navigate('menu')
     }
     catch (err) {
