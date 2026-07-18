@@ -1,7 +1,8 @@
 import { Layout, Menu, theme, Image } from 'antd'
-import React from 'react'
+import React, { useEffect } from 'react'
 import logo from '../assets/logo.png'
-import { Outlet, useNavigate } from 'react-router';
+import { Outlet, replace, useNavigate } from 'react-router';
+import axios from 'axios';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -18,7 +19,9 @@ const siderStyle = {
 
 const items = [
   {key:"student" , label:"Student"},
-  {key:"teacher" , label:"Teacher"}
+  {key:"course" , label:"Course"},
+  {key:"teacher" , label:"Teacher"},
+  {key:"room" , label:"Room"},
 ]
 
 export default function MenuPage() {
@@ -32,6 +35,16 @@ export default function MenuPage() {
     const onClick = e => {
       navigate(`${e.key}`)
     }
+
+    useEffect(() => {
+      const token = localStorage.getItem('userToken')
+      if (token){
+        axios.defaults.headers.common = { 'Authorization' : `Bearer ${token}`}
+      }
+      else {
+        navigate("/login", replace)
+      }
+    }, [])  
 
     return (
     <>
