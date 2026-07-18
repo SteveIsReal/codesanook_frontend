@@ -14,7 +14,10 @@ export default function Course(){
     const courseColumns = [
         {title: "Name", dataIndex: "name", key:"name"},
         {title: "Teacher", dataIndex:"teacher", key:"teacher"},
-        {title: "Students", dataIndex:"students", key:"students"},
+        {title: "Students", dataIndex:"students", key:"students", render : (data) => (<ul> {data.map((d) => <li>{d}</li>)} </ul>)},
+        {title: "Weekdays", dataIndex:"weekday", key:"weeksday"},
+        {title: "Time", dataIndex:"start_time", key:"time", render : (_,record) => (`${record.start_time.slice(0,5)} - ${record.end_time.slice(0,5)}`)},
+        {title: "Sessions", dataIndex:"max_session", key:"session", render : (_,record) => (`${record.used_session_count}/${record.max_session}`)},
     ]
 
     useEffect(() => {
