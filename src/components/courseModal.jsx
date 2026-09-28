@@ -27,10 +27,10 @@ export default function CourseModal(props){
         const validate = await form.validateFields()
         const formData = await form.getFieldsValue()
 
-        console.log(formData.time[0])
+        // console.log(formData.time[0])
 
-        formData['start_time'] = typeof(formData.time[0]) == "string" ? formData.time[0] :formData.time[0].format('HH:mm')
-        formData['end_time'] = typeof(formData.time[1]) == "string" ? formData.time[1] :formData.time[1].format("HH:mm")
+        // formData['start_time'] = typeof(formData.time[0]) == "string" ? formData.time[0] :formData.time[0].format('HH:mm')
+        // formData['end_time'] = typeof(formData.time[1]) == "string" ? formData.time[1] :formData.time[1].format("HH:mm")
 
         console.log(formData)
         
@@ -69,23 +69,6 @@ export default function CourseModal(props){
             </Form.Item>
             <Form.Item label="Deduct credit" name="deduct_credit" required>
                 <InputNumber />
-            </Form.Item>
-            <Form.Item label="Time" name="time" getValueProps={(v) => ({value: v?.map(time => 
-
-                { if(time){
-                    return dayjs(time, "HH:mm")
-                }else{
-                    return null
-                }}
-                
-                )})} required>
-                <TimePicker.RangePicker format="HH:mm"/>
-            </Form.Item>
-            <Form.Item label="Weekday" name="weekday" required>
-                <Select placeholder="Choose weekday" options={WEEKDAYS}/>
-            </Form.Item>
-            <Form.Item label="Room" name="room" required>
-                <Select placeholder="Choose room" options={props.roomData} />
             </Form.Item>
         </Form>
         <Sub />
