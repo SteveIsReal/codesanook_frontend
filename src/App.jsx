@@ -7,6 +7,13 @@ import Teacher from './components/teacher'
 import Room from './components/room'
 import Course from './components/course'
 
+export const PATH = {
+  MAIN: '/',
+  LOGIN: '/login',
+
+  STUDENT: 'student'
+};
+
 function App() {
 
   return (

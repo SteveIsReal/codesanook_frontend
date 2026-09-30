@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import logo from '../assets/logo.png'
 import { Outlet, replace, useNavigate } from 'react-router';
 import axios from 'axios';
+import { PATH } from '../App';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -42,7 +43,7 @@ export default function MenuPage() {
         axios.defaults.headers.common = { 'Authorization' : `Bearer ${token}`}
       }
       else {
-        navigate("/login", replace)
+        navigate(PATH.LOGIN, replace)
       }
     }, [])  
 

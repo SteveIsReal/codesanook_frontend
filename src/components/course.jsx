@@ -4,6 +4,7 @@ import { Table, Button, Space } from "antd"
 import CourseModal from "./courseModal"
 import EditTimeModal from "./editTimeModal"
 import dayjs from "dayjs"
+import { URL_MEMBER } from "../constants/strings"
 
 export default function Course(){
 
@@ -21,7 +22,7 @@ export default function Course(){
     }
     
     const fetchTeacher = async () => {
-        const response  = await axios.get("/api/member/teacher/")
+        const response  = await axios.get(URL_MEMBER.TEACHER)
         const map_data = response.data.map(d => ({'value': d.id, 'label': d.first_name}))
         setTeacherData(map_data)
     }
