@@ -35,7 +35,13 @@ export default function StudentModal(props) {
     <Modal open={props.isCreateStudent || props.editStudentData} onOk={Submit} onCancel={cancel}>
         <h1>{props.isCreateStudent ? "Add" : "Edit"} Student</h1>
         <Form form={form}>
-            <Form.Item label="Name" name="name" rules={[{required : true}]}>
+            <Form.Item label="First Name" name="first_name" rules={[{required : true}]}>
+                <Input />
+            </Form.Item> 
+            <Form.Item label="Last Name" name="last_name" rules={[{required : true}]}>
+                <Input />
+            </Form.Item>
+            <Form.Item label="Nickname" name="nickname" rules={[{required : true}]}>
                 <Input />
             </Form.Item>
             <Form.Item label="School" name="school" rules={[{required : true}]}>

@@ -6,6 +6,7 @@ import Student from './components/student'
 import Teacher from './components/teacher'
 import Room from './components/room'
 import Course from './components/course'
+import Curriculum from './components/curriculum';
 
 export const PATH = {
   MAIN: '/',
@@ -20,11 +21,13 @@ function App() {
   <BrowserRouter>
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      {/* Add private route */}
       <Route path="/" element={<MenuPage />} >
         <Route path='/student' element={<Student />} />
         <Route path="/teacher" element={<Teacher />} />
         <Route path="/room" element={<Room />} />
         <Route path="/course" element={<Course />} />
+        <Route path="/curriculum" element={<Curriculum />} />
       </Route>
       <Route path="*" element={<p>Error kub 404</p>}></Route>
     </Routes>

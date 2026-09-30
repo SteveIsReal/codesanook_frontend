@@ -23,6 +23,7 @@ const items = [
   {key:"course" , label:"Course"},
   {key:"teacher" , label:"Teacher"},
   {key:"room" , label:"Room"},
+  {key:"curriculum", label:"Curriculum"}
 ]
 
 export default function MenuPage() {
