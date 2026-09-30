@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Form, Modal, Space, Card, TimePicker, Select, Table } from "antd";
 import axios from "axios"
 import CurriculumModal from "./curriculumModal";
+import { URL_CLASSROOM } from "../constants/urls";
 
 export default function Curriculum(){
 
@@ -19,7 +20,7 @@ export default function Curriculum(){
     ]
 
     const fetchCurriculum = async () => {
-        const response = await axios.get('/api/classroom/curriculum/')
+        const response = await axios.get(URL_CLASSROOM.CURRICULUM)
         setCurriculumData(response.data)
         console.log(response.data)
     }

@@ -3,6 +3,7 @@ import { Button, Checkbox, Form, Input, message } from 'antd';
 import { useNavigate } from 'react-router';
 import axios from 'axios'
 import Password from 'antd/es/input/Password';
+import { URL_TOKEN } from '../constants/urls';
 
 axios.defaults.baseURL = 'http://localhost:8000'
 
@@ -14,7 +15,7 @@ export default function LoginPage () {
     const onFinish = async (values) => {
     console.log('Success:', values);
     try{
-        const response = await axios.post('/api/token/', {username : values.username, password: values.password})
+        const response = await axios.post(URL_TOKEN.TOKEN, {username : values.username, password: values.password})
         const token = response.data.access
         localStorage.setItem('userToken', token)
         axios.defaults.headers.common = { 'Authorization' : `Bearer ${token}`}

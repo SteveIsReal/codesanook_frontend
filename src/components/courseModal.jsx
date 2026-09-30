@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Input, InputNumber, message, Modal, Select, Space, TimePicker, Button } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
+import { URL_CLASSROOM } from "../constants/urls";
 
 export default function CourseModal(props){
 
@@ -31,7 +32,7 @@ export default function CourseModal(props){
         
         try{
             const response = props.isCreateCourse ? 
-            await axios.post('/api/classroom/course/', formData) : await axios.patch(`/api/classroom/course/${props.editCourseData.id}/`, formData)
+            await axios.post(URL_CLASSROOM.COURSE, formData) : await axios.patch(`${URL_CLASSROOM.COURSE}${props.editCourseData.id}/`, formData)
             console.log(response)
             onCancel()
         }

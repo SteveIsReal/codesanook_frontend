@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Form, Input, Modal, Button, Space, Card, message, Upload } from 'antd'
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
 import axios from 'axios'
+import { URL_CLASSROOM } from '../constants/urls';
 
 export default function CurriculumModal(props){
 
@@ -24,10 +25,10 @@ export default function CurriculumModal(props){
             // console.log(requestForm)
 
             if (props.isCreateCurriculum) {
-                const response = await axios.post("/api/classroom/curriculum/", formData)
+                const response = await axios.post(URL_CLASSROOM.CURRICULUM, formData)
             } 
             else {
-                const response = await axios.put(`/api/classroom/curriculum/${props.editCurriculumData.id}/`, formData)
+                const response = await axios.put(`${URL_CLASSROOM.CURRICULUM}${props.editCurriculumData.id}/`, formData)
             }
 
             props.cancel()

@@ -3,6 +3,8 @@ import { Button, Form, Modal, Space, Card, TimePicker, Select, Table } from "ant
 import { useSearchParams } from "react-router";
 import axios from 'axios'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { URL_CLASSROOM } from "../constants/urls";
+import EditTimeModal from "./editTimeModal2";
 
 
 const WEEKDAYS = [
@@ -18,16 +20,25 @@ const WEEKDAYS = [
 export default function ViewTimeModal(props) {
   const [form] = Form.useForm();
   const [timeSlotData, setTimeSlotData] = useState([])
+  const [editTimeSlotData, setEditTimeSlotData] = useState(null)
+  const [isCreateTimeSlot, setIsCreateTimeSlot] = useState(false)
 
   const fetchTimeSlot = async () => {
-    const response = await axios.get("/api/classroom/time_slot/")
+    const response = await axios.get(URL_CLASSROOM.TIMESLOT)
     console.log(response.data)
     setTimeSlotData(response.data)
   }
 
-  const handleFinish = (values) => {
-    console.log("Validated Form Data:", values);
-  };
+  const closeEditTimeSlot = () => {
+    setIsCreateTimeSlot(false)
+    setEditTimeSlotData(null)
+  }
+
+  const deleteTimeSlot = async (id) => {
+    await axios.delete(`${URL_CLASSROOM.TIMESLOT}${id}/`)
+    fetchTimeSlot()
+    props.fetchCourse()
+  }
 
   const timeSlotColumns = [
     {title: "Start time", dataIndex: "start_time", key: "start_time"},
@@ -36,30 +47,25 @@ export default function ViewTimeModal(props) {
     {title: "Room", dataIndex: "room_name", key:"room_name"},
     {title: "Action", key: "action", render: (_, record) => (
       <Space>
-        <Button icon={<EditOutlined/>} onClick={() => 0}/>
-        <Button icon={<DeleteOutlined/>} onClick={() => 0} danger/>
+        <Button icon={<EditOutlined/>} onClick={() => setEditTimeSlotData(record)}/>
+        <Button icon={<DeleteOutlined/>} onClick={() => deleteTimeSlot(record.id)} danger/>
       </Space>
     )}
   ]
   
-  // useEffect(() => {
-  //     if (props.editTimeData) {
-  //         form.setFieldsValue({test : props.editTimeData});
-  //     } else {
-  //         form.resetFields();
-  //     }
-  // }, [props.editTimeData, form])
-
   useEffect(() => {
     fetchTimeSlot()
-  }, [props.isViewTimeSlot])
+  }, [props.isViewTimeSlot, isCreateTimeSlot, editTimeSlotData])
 
 
   return (
+    <>
+    <EditTimeModal roomData={props.roomData} closeEditTimeSlot={closeEditTimeSlot} isCreateTimeSlot={isCreateTimeSlot} editTimeSlotData={editTimeSlotData} />
     <Modal open={props.isViewTimeSlot} onCancel={props.onCancel} onOk={form.submit} closeIcon={false} width={"75%"}>
-      <Button icon={<PlusOutlined/>} onClick={() => 0} type="dashed" block>Add time slot</Button>
+      <Button icon={<PlusOutlined/>} onClick={() => setIsCreateTimeSlot(true)} type="dashed" block>Add time slot</Button>
       <Table dataSource={timeSlotData} columns={timeSlotColumns} />
     </Modal>
+    </>
   );
 }
 

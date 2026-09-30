@@ -1,6 +1,7 @@
 import React from "react";
 import axios from 'axios'
 import { Modal, Form, Input, message } from "antd";
+import { URL_MEMBER } from "../constants/urls";
 
 
 export default function TeacherModal(props) {
@@ -20,12 +21,12 @@ export default function TeacherModal(props) {
         const formData = form.getFieldsValue()  
 
         if (props.isAddTeacher){
-            const response = await axios.post('/api/member/teacher/', {"user" : {...formData}})
+            const response = await axios.post(URL_MEMBER.TEACHER, {"user" : {...formData}})
 
         }
         else {
 
-            const response = await axios.patch(`/api/member/teacher/${props.editData.id}/`, {"user": formData})
+            const response = await axios.patch(`${URL_MEMBER.TEACHER}${props.editData.id}/`, {"user": formData})
         }
 
         props.onSuccess()

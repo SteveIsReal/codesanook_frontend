@@ -1,24 +1,25 @@
 import React, { useEffect } from 'react';
 import axios from 'axios'
-import { Modal, Form, Input, Select, message } from "antd";
+import { Modal, Form, Input, Select, message, Switch } from "antd";
+import { URL_MEMBER } from '../constants/urls';
 
 export default function StudentModal(props) {
 
     const [form] = Form.useForm()
 
     const cancel = () => {
-        form.resetFields()
         props.onCancel()
+        form.resetFields()
     }
 
     const Submit = async () => { 
         const validate = await form.validateFields()
         const formData = form.getFieldsValue()
         if (props.isCreateStudent){
-            const response = await axios.post('/api/member/student/', formData) 
+            const response = await axios.post(URL_MEMBER.STUDENT, formData) 
         }
         else{
-            const response = await axios.patch(`/api/member/student/${props.editStudentData.id}/`, formData)
+            const response = await axios.patch(`${URL_MEMBER.STUDENT}${props.editStudentData.id}/`, formData)
         }
         props.fetchStudent()
         cancel()
@@ -46,6 +47,9 @@ export default function StudentModal(props) {
             </Form.Item>
             <Form.Item label="School" name="school" rules={[{required : true}]}>
                 <Select options={props.schoolList}></Select>
+            </Form.Item>
+            <Form.Item label="Registered" name="is_student">
+                <Switch defaultValue={false}/>
             </Form.Item>
 
         </Form>

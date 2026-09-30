@@ -4,7 +4,7 @@ import { Table, Button, Space } from "antd"
 import CourseModal from "./courseModal"
 import ViewTimeModal from "./viewTimeModal"
 import dayjs from "dayjs"
-import { URL_MEMBER } from "../constants/strings"
+import { URL_CLASSROOM, URL_MEMBER } from "../constants/urls"
 import SelectTimeModal from "./selectTimeModal";
 
 export default function Course(){
@@ -21,7 +21,7 @@ export default function Course(){
     const [isViewTimeSlot, setIsViewTimeSlot] = useState(false)
 
     const fetchCourse = async () => {
-        const response = await axios.get("api/classroom/course/")
+        const response = await axios.get(URL_CLASSROOM.COURSE)
         setCourseData(response.data)
     }
     
@@ -32,25 +32,25 @@ export default function Course(){
     }
 
     const fetchStudent = async () => {
-        const response = await axios.get("/api/member/student/?is_student=True")
+        const response = await axios.get(URL_MEMBER.STUDENT_REGISTERED)
         const map_data = response.data.map(d => ({'value': d.id, 'label': d.name}))
         setStudentData(map_data)
     }
 
     const fetchRoom = async () => {
-        const response = await axios.get("/api/classroom/room/")
+        const response = await axios.get(URL_CLASSROOM.ROOM)
         const map_data = response.data.map(d => ({'value': d.id, 'label': d.name}))
         setRoomData(map_data)
     }
 
     const fetchCurriculum = async () => {
-        const response = await axios.get("/api/classroom/curriculum/")
+        const response = await axios.get(URL_CLASSROOM.CURRICULUM)
         const map_data = response.data.map(d => ({'value': d.id, 'label': d.name}))
         setCurriculum(map_data) 
     }
 
     const fetchTimeSlot = async () => {
-        const response = await axios.get("/api/classroom/time_slot/")
+        const response = await axios.get(URL_CLASSROOM.TIMESLOT)
         const map_data = response.data.map(d => ({'value': d.id, 'label': `${d.start_time}-${d.end_time} on ${d.weekday.toLowerCase()} at ${d.room_name}`}))
         setTimeSlotTableData(map_data)
     }
@@ -119,7 +119,7 @@ export default function Course(){
         closeModal={closeCourseModal}
         curriculum={curriculum}
         />
-        <ViewTimeModal roomData={roomData} isViewTimeSlot={isViewTimeSlot} onCancel={closeTimeModal}/>
+        <ViewTimeModal fetchCourse={fetchCourse}roomData={roomData} isViewTimeSlot={isViewTimeSlot} onCancel={closeTimeModal}/>
         
     </>
     )

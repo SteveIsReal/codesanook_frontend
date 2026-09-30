@@ -5,6 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import axios from "axios";
 import StudentModal from "./studentModal";
 import TransactionModal from "./transactionModal";
+import { URL_MEMBER } from "../constants/urls";
 
 export default function Student(){
 
@@ -18,12 +19,12 @@ export default function Student(){
     
 
     const fetchStudent = async () => {
-        const response = await axios.get('/api/member/student/')
+        const response = await axios.get(URL_MEMBER.STUDENT)
         setStudentData(response.data)
     }
 
     const fetchSchoolList = async () => {
-        const response = await axios.get("/api/member/get_school/")
+        const response = await axios.get(URL_MEMBER.GET_SCHOOL)
         setSchoolList(response.data.map(d => ({value: d.id, label: d.name})))
     }
 
@@ -50,7 +51,7 @@ export default function Student(){
                 description={<InputNumber min={1} defaultValue={1} onChange={value => (setChangeCredit(value))}/>}
                 onConfirm={async () => {
                     const response = await axios.post(
-                        '/api/member/add_credit/', 
+                        URL_MEMBER.ADD_CREDIT, 
                         {
                             student : record.id,
                             credit : changeCredit
@@ -69,7 +70,7 @@ export default function Student(){
                 description={<InputNumber min={1} defaultValue={1} onChange={value => (setChangeCredit(value))}/>}
                 onConfirm={async () => {
                     const response = await axios.post(
-                        '/api/member/use_credit/', 
+                        URL_MEMBER.USE_CREDIT, 
                         {
                             student : record.id,
                             credit : changeCredit * -1

@@ -3,6 +3,7 @@ import axios from 'axios'
 import TeacherModal from "./teacherModal";
 import { Table, Button, Space } from "antd"
 import { useState, useEffect } from "react"
+import { URL_CLASSROOM, URL_MEMBER } from "../constants/urls";
 
 export default function Teacher(){
 
@@ -11,7 +12,7 @@ export default function Teacher(){
     const [isAddTeacher, setIsAddTeacher] = useState(false)
 
     const fetchTeacher = async () => {
-        const response  = await axios.get("/api/member/teacher/")
+        const response  = await axios.get(URL_MEMBER.TEACHER)
         setTeacherData(response.data)
         console.log(response.data)
     }

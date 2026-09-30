@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import axios from 'axios'
 import { Modal, Form, Input, Select, message } from "antd";
+import { URL_CLASSROOM } from '../constants/urls';
 
 export default function RoomModal(props) {
 
@@ -15,10 +16,10 @@ export default function RoomModal(props) {
         const validate = await form.validateFields()
         const formData = form.getFieldsValue()
         if (props.isCreateRoom){
-            const response = await axios.post('/api/classroom/room/', formData) 
+            const response = await axios.post(URL_CLASSROOM.ROOM, formData) 
         }
         else{
-            const response = await axios.patch(`/api/classroom/room/${props.editRoomData.id}/`, formData)
+            const response = await axios.patch(`${URL_CLASSROOM.ROOM}{props.editRoomData.id}/`, formData)
         }
         props.fetchRoom()
         cancel()
