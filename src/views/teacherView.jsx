@@ -1,11 +1,11 @@
 import React from "react";
 import axios from 'axios'
-import TeacherModal from "./teacherModal";
+import TeacherModal from "../components/teacherModal";
 import { Table, Button, Space } from "antd"
 import { useState, useEffect } from "react"
 import { URL_CLASSROOM, URL_MEMBER } from "../constants/urls";
 
-export default function Teacher(){
+export default function TeacherView(){
 
     const [teacherData, setTeacherData] = useState([])
     const [editData, setEditData] = useState(null)

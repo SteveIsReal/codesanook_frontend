@@ -1,13 +1,13 @@
 import React, { Children, use, useEffect, useState } from "react"
 import axios from "axios"
 import { Table, Button, Space } from "antd"
-import CourseModal from "./courseModal"
-import ViewTimeModal from "./viewTimeModal"
+import CourseModal from "../components/courseModal"
+import ViewTimeModal from "../components/viewTimeModal"
 import dayjs from "dayjs"
 import { URL_CLASSROOM, URL_MEMBER } from "../constants/urls"
-import SelectTimeModal from "./selectTimeModal";
+import SelectTimeModal from "../components/selectTimeModal";
 
-export default function Course(){
+export default function CourseView(){
 
     const [courseData, setCourseData] = useState([])
     const [teacherData, setTeacherData] = useState([])

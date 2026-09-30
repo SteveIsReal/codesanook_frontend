@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import logo from '../assets/logo.png'
 import { Outlet, replace, useNavigate } from 'react-router';
 import axios from 'axios';
-import { PATH } from '../App';
+import { PATH } from '../routes/customRoute';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -22,7 +22,7 @@ const items = [
   {key:"student" , label:"Student"},
   {key:"course" , label:"Course"},
   {key:"teacher" , label:"Teacher"},
-  {key:"room" , label:"Room"},
+  {key:"classroom" , label:"Classroom"},
   {key:"curriculum", label:"Curriculum"}
 ]
 

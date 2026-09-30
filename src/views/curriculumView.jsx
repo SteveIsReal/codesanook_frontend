@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Button, Form, Modal, Space, Card, TimePicker, Select, Table } from "antd";
 import axios from "axios"
-import CurriculumModal from "./curriculumModal";
+import CurriculumModal from "../components/curriculumModal";
 import { URL_CLASSROOM } from "../constants/urls";
 
-export default function Curriculum(){
+export default function CurriculumView(){
 
     const [curriculumData, setCurriculumData] = useState([])
     const [isCreateCurriculum, setIsCreateCurriculum] = useState(false)

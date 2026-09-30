@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Space,Table,Button } from "antd";
 import axios from "axios";
-import RoomModal from "./roomModal";
+import RoomModal from "../components/roomModal";
 
-export default function Room() {
+export default function RoomView() {
 
     const [roomData, setRoomData] = useState([])
     const [isCreateRoom, setIsCreateRoom] = useState(false)

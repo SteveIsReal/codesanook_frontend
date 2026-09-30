@@ -3,11 +3,11 @@ import { useSearchParams } from "react-router";
 import { Space, Table, Button, Flex, Popconfirm, InputNumber, message } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import axios from "axios";
-import StudentModal from "./studentModal";
-import TransactionModal from "./transactionModal";
+import StudentModal from "../components/studentModal";
+import TransactionModal from "../components/transactionModal";
 import { URL_MEMBER } from "../constants/urls";
 
-export default function Student(){
+export default function StudentView(){
 
     const [studentData, setStudentData] = useState([])
     const [isCreateStudent, setIsCreateStudent] = useState(false)
@@ -24,6 +24,7 @@ export default function Student(){
     }
 
     const fetchSchoolList = async () => {
+        // add try catch
         const response = await axios.get(URL_MEMBER.GET_SCHOOL)
         setSchoolList(response.data.map(d => ({value: d.id, label: d.name})))
     }

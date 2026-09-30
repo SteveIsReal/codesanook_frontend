@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import axios from 'axios'
 import Password from 'antd/es/input/Password';
 import { URL_TOKEN } from '../constants/urls';
+import { PATH } from '../routes/customRoute';
 
 axios.defaults.baseURL = 'http://localhost:8000'
 
@@ -19,7 +20,7 @@ export default function LoginPage () {
         const token = response.data.access
         localStorage.setItem('userToken', token)
         axios.defaults.headers.common = { 'Authorization' : `Bearer ${token}`}
-        navigate('/')
+        navigate(PATH.MAIN)
     }
     catch (err) {
         messageApi.open({
