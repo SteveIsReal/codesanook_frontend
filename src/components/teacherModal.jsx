@@ -60,8 +60,8 @@ export default function TeacherModal(props) {
                 <Form.Item label="Last name" name="last_name" rules={[{ required : true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item label="Email" name="email" rules={[{ required : true }]}>
-                    <Input />
+                <Form.Item label="Email" name="email" rules={[{ required : true, type: "email"}]}>
+                    <Input  />
                 </Form.Item>
                 <Sub/> 
             </Form>

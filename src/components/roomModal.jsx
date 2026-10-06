@@ -19,9 +19,9 @@ export default function RoomModal(props) {
             const response = await axios.post(URL_CLASSROOM.ROOM, formData) 
         }
         else{
-            const response = await axios.patch(`${URL_CLASSROOM.ROOM}{props.editRoomData.id}/`, formData)
+            const response = await axios.patch(`${URL_CLASSROOM.ROOM}${props.editRoomData.id}/`, formData)
         }
-        props.fetchRoom()
+        props.refreshTable()
         cancel()
     }
 

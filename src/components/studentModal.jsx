@@ -21,7 +21,6 @@ export default function StudentModal(props) {
         else{
             const response = await axios.patch(`${URL_MEMBER.STUDENT}${props.editStudentData.id}/`, formData)
         }
-        props.fetchStudent()
         cancel()
     }
 

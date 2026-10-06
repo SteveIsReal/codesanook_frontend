@@ -11,34 +11,25 @@ export default function CourseModal(props){
 
     const Sub = () => {
         const x = Form.useFormInstance()
-        return props.isCreateCourse ? form.resetFields() : form.setFieldsValue(props.editCourseData)
+        return props.isCreateCourse ? form.resetFields() : form.setFieldsValue({...props.editCourseData, students: props.editCourseData.students_obj.map(d => ({label:d.name, value: d.id}))})
     }
-
-    const WEEKDAYS = [
-        {value: "MONDAY", label: "Monday"},
-        {value: "TUESDAY", label: "Tuesday"},
-        {value: "WEDNESDAY", label: "Wednesday"},
-        {value: "THRUSDAY", label: "Thrusday"},
-        {value: "FRIDAY", label: "Friday"},
-        {value: "SATURDAY", label: "Saturday"},
-        {value: "SUNDAY", label: "Sunday"},
-    ]
 
     const onSubmit = async () => {
         const validate = await form.validateFields()
         const formData = await form.getFieldsValue()
+        const requestData = {...formData, students: formData.students.map(d => d.value ?? d)}
 
-        console.log(formData)
+        console.log(formData.students.map(d => d.value ? true: false))
         
         try{
             const response = props.isCreateCourse ? 
-            await axios.post(URL_CLASSROOM.COURSE, formData) : await axios.patch(`${URL_CLASSROOM.COURSE}${props.editCourseData.id}/`, formData)
+            await axios.post(URL_CLASSROOM.COURSE, requestData) : await axios.patch(`${URL_CLASSROOM.COURSE}${props.editCourseData.id}/`, requestData)
             console.log(response)
             onCancel()
         }
         catch (err) {
-            console.log(err.response.data.info)
-            messageApi.open({type: 'error', content: err.response.data.info.map(v => `${v} is registered`)})
+            console.log(err.response.data)
+            messageApi.open({type: 'error', content: err.response.data?.students.map(v => `${v}`)})
         }
     }
 

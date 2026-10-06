@@ -1,11 +1,12 @@
 import React, { use, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { Space, Table, Button, Flex, Popconfirm, InputNumber, message } from "antd";
-import { PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, EyeFilled, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from "axios";
 import StudentModal from "../components/studentModal";
 import TransactionModal from "../components/transactionModal";
 import { URL_MEMBER } from "../constants/urls";
+import ViewTable from "../components/viewTable";
 
 export default function StudentView(){
 
@@ -14,13 +15,14 @@ export default function StudentView(){
     const [editStudentData, setEditStudentData] = useState(null)
     const [schoolList, setSchoolList] = useState([])
     const [changeCredit, setChangeCredit] = useState(0)
+    const [totalStudent, setTotalStudent] = useState(0)
+    const [refresh, setRefresh] = useState(0)
     const [showTransactionModal, setShowTransactionModal] = useState(null)
     const [messageApi, holder] = message.useMessage()
     
 
-    const fetchStudent = async () => {
-        const response = await axios.get(URL_MEMBER.STUDENT)
-        setStudentData(response.data)
+    const refreshTable = async () => {
+        setRefresh(refresh + 1)
     }
 
     const fetchSchoolList = async () => {
@@ -34,7 +36,6 @@ export default function StudentView(){
     }
 
     useEffect(() => {
-        fetchStudent()
         fetchSchoolList()
     }, [])
 
@@ -46,7 +47,7 @@ export default function StudentView(){
         {title : 'Credit', dataIndex: "current_credit", key:'current_credit'},
         {title : 'Action', key:'email', render : (_, record) => (
             <Flex gap={"medium"}>
-            <Button onClick={() => (setEditStudentData(record))}>Edit</Button>
+            <Button onClick={() => (setEditStudentData(record))} icon={<EditOutlined />} color="yellow" variant=""/>
             <Popconfirm 
                 title="Add credit"
                 description={<InputNumber min={1} defaultValue={1} onChange={value => (setChangeCredit(value))}/>}
@@ -59,7 +60,7 @@ export default function StudentView(){
                         } 
                     )
                     message.success("Add credit successfully!")
-                    fetchStudent()
+                    refreshTable()
                 }}
                 onCancel={() => (1)}
                 okText="Send"
@@ -78,14 +79,15 @@ export default function StudentView(){
                         } 
                     )
                     message.success("Update successfully!")
-                    fetchStudent()
+                    refreshTable()
                 }}
                 onCancel={() => (1)}
                 okText="Send"
                 cancelText="Cancel">
-                <Button color="danger" variant="solid" icon={<PlusOutlined />} onClick={() => 1}></Button>
+                <Button color="danger" variant="solid" icon={<MinusOutlined />} onClick={() => 1}></Button>
             </Popconfirm>
-            <Button onClick={() => setShowTransactionModal(record.id)}>👁️</Button>
+            <Button onClick={() => {setShowTransactionModal(record.id)}} icon={<EyeFilled />}/>
+
             {/* <Button color="danger" variant="solid" onClick={() => 1}>-</Button> */}
             </Flex>
         )},
@@ -95,19 +97,20 @@ export default function StudentView(){
         <>
         {holder}
         <h1>Student</h1>
-        <h3>Total : {studentData.length}</h3>
+        <h3>Total : {totalStudent}</h3>
 
-        <StudentModal isCreateStudent={isCreateStudent} editStudentData={editStudentData} schoolList={schoolList} fetchStudent={fetchStudent} 
+        <StudentModal isCreateStudent={isCreateStudent} editStudentData={editStudentData} schoolList={schoolList} 
         onCancel={() => {
             setIsCreateStudent(false);
             setEditStudentData(null);
+            refreshTable()
             }}/>
         
         <Space orientation="vertical" size="medium" style={{display : "flex"}}>
             <Button onClick={() => setIsCreateStudent(true)} type="primary">Add Student</Button>
-            <Table dataSource={studentData} columns={studentColumns}></Table>
+            <ViewTable urls={URL_MEMBER.STUDENT} columns={studentColumns} refresh={refresh} getCount={setTotalStudent}/> 
         </Space>
-        < TransactionModal studentId={showTransactionModal} closeTransactionModal={closeTransactionModal}/>
+        <TransactionModal studentId={showTransactionModal} closeTransactionModal={closeTransactionModal}/>
         </>
 
     )

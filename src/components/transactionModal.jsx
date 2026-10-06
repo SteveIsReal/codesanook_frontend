@@ -2,10 +2,12 @@ import { Modal, Table } from "antd"
 import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router"
+import ViewTable from "./viewTable";
+import { URL_MEMBER } from "../constants/urls";
 
 export default function TransactionModal(props) {
 
-    const [transaction, setTransaction] = useState([])
+    const [refresh, setRefresh] = useState(0)
 
     const col = [
         {title: "date", dataIndex : "date", key : "date"},
@@ -14,20 +16,18 @@ export default function TransactionModal(props) {
         {title: "note", dataIndex:"note", key:"note"}
     ]
 
-    const fetchCredit = async () => {
-        console.log(props.studentId)
-        const response = await axios.get(`api/member/view_credit/${props.studentId}/`)
-        setTransaction(response.data)
+    const refreshTable = () => {
+        setRefresh(refresh + 1)
     }
 
     useEffect(() => {
-        props.studentId != null && fetchCredit()
+        props.studentId != null && refreshTable()
     }, [props.studentId])
 
 
     return (
     <Modal open={props.studentId} onCancel={props.closeTransactionModal} onOk={props.closeTransactionModal}>
-        <Table dataSource={transaction} columns={col}/>
+        <ViewTable urls={`${URL_MEMBER.VIEW_CREDIT}${props.studentId}`} columns={col} refresh={refresh}/>
     </Modal>
     )
 }

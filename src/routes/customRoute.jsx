@@ -8,16 +8,19 @@ import TeacherView from '../views/teacherView';
 import RoomView from '../views/roomView';
 import CourseView from '../views/courseView';
 import CurriculumView from '../views/curriculumView';
+import AttendanceView from '../views/attendanceView';
+import AttendancePage from '../pages/attendancePage';
 
 export const PATH = {
   MAIN: '/',
-  LOGIN: '/login',
+  LOGIN: 'login',
 
   STUDENT: 'student',
   TEACHER: 'teacher',
   CLASSROOM: 'classroom',
   COURSE: 'course',
-  CURRICULUM: 'curriculum'
+  CURRICULUM: 'curriculum',
+  ATTENDANCE: 'attendance'
 
 };
 
@@ -26,7 +29,7 @@ export default function CustomRoute() {
   return (
   <BrowserRouter>
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
+      <Route path={`/${PATH.LOGIN}`} element={<LoginPage />} />
       {/* Add private route */}
       <Route path="/" element={<MenuPage />} >
         <Route path={PATH.STUDENT} element={<StudentView />} />
@@ -34,7 +37,9 @@ export default function CustomRoute() {
         <Route path={PATH.CLASSROOM} element={<RoomView />} />
         <Route path={PATH.COURSE} element={<CourseView />} />
         <Route path={PATH.CURRICULUM} element={<CurriculumView />} />
+        <Route path={PATH.ATTENDANCE} element={<AttendanceView />} />
       </Route>
+      <Route path={`/${PATH.ATTENDANCE}/:courseId/:sessionId`} element={<AttendancePage />}/>
       <Route path="*" element={<p>Error kub 404</p>}></Route>
     </Routes>
   </BrowserRouter>

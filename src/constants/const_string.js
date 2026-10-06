@@ -7,3 +7,10 @@ export const WEEKDAYS = [
   {value: "SATURDAY", label: "Saturday"},
   {value: "SUNDAY", label: "Sunday"},
 ]
+
+export const PRESENT_OPTIONS = [
+  {label: "Present", value: "PRESENT"},
+  {label: "Excuse", value: "EXCUSE"},
+  {label: "Sick leave", value: "SICK LEAVE"},
+  {label: "Absent", value: "ABSENT"}
+]

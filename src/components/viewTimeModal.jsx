@@ -4,7 +4,8 @@ import { useSearchParams } from "react-router";
 import axios from 'axios'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { URL_CLASSROOM } from "../constants/urls";
-import EditTimeModal from "./editTimeModal2";
+import EditTimeModal from "./editTimeModal";
+import ViewTable from "./viewTable";
 
 
 const WEEKDAYS = [
@@ -19,14 +20,13 @@ const WEEKDAYS = [
 
 export default function ViewTimeModal(props) {
   const [form] = Form.useForm();
-  const [timeSlotData, setTimeSlotData] = useState([])
   const [editTimeSlotData, setEditTimeSlotData] = useState(null)
   const [isCreateTimeSlot, setIsCreateTimeSlot] = useState(false)
+  const [refresh, setRefresh] = useState(0)
 
-  const fetchTimeSlot = async () => {
-    const response = await axios.get(URL_CLASSROOM.TIMESLOT)
-    console.log(response.data)
-    setTimeSlotData(response.data)
+  const refreshTable = () => {
+    setRefresh(refresh + 1)
+    props.refreshTable()
   }
 
   const closeEditTimeSlot = () => {
@@ -36,8 +36,7 @@ export default function ViewTimeModal(props) {
 
   const deleteTimeSlot = async (id) => {
     await axios.delete(`${URL_CLASSROOM.TIMESLOT}${id}/`)
-    fetchTimeSlot()
-    props.fetchCourse()
+    refreshTable()
   }
 
   const timeSlotColumns = [
@@ -54,7 +53,7 @@ export default function ViewTimeModal(props) {
   ]
   
   useEffect(() => {
-    fetchTimeSlot()
+    refreshTable()
   }, [props.isViewTimeSlot, isCreateTimeSlot, editTimeSlotData])
 
 
@@ -63,66 +62,8 @@ export default function ViewTimeModal(props) {
     <EditTimeModal roomData={props.roomData} closeEditTimeSlot={closeEditTimeSlot} isCreateTimeSlot={isCreateTimeSlot} editTimeSlotData={editTimeSlotData} />
     <Modal open={props.isViewTimeSlot} onCancel={props.onCancel} onOk={form.submit} closeIcon={false} width={"75%"}>
       <Button icon={<PlusOutlined/>} onClick={() => setIsCreateTimeSlot(true)} type="dashed" block>Add time slot</Button>
-      <Table dataSource={timeSlotData} columns={timeSlotColumns} />
+      <ViewTable urls={URL_CLASSROOM.TIMESLOT} columns={timeSlotColumns} refresh={refresh}/>
     </Modal>
     </>
   );
 }
-
-
-
-
-      {/* <Form form={form} onFinish={handleFinish} layout="vertical">
-        <Form.List name="test" >
-          {(fields, { add, remove }) => (
-            <Space direction="vertical" style={{ width: "100%" }}>
-              {fields.map(({ key, name, ...restField }) => (
-                <Card key={key}>
-                  <Form.Item
-                    {...restField}
-                    label="Time"
-                    name={[name, "time"]}
-                    // name="time"
-                    rules={[{ required: true, message: "Please select time!" }]}
-                  >
-                    <TimePicker.RangePicker format="HH:mm" />
-                  </Form.Item>
-
-                  <Form.Item
-                    {...restField}
-                    label="Weekday"
-                    name={[name, "weekday"]}
-                    // name="weekday"
-                    rules={[{ required: true, message: "Please select weekday!" }]}
-                  >
-                    <Select placeholder="Choose day" options={WEEKDAYS} />
-                  </Form.Item>
-
-                  <Form.Item
-                    {...restField}
-                    label="Room"
-                    name={[name, "room"]}
-                    // name="room"
-                    rules={[{ required: true, message: "Please select room!" }]}
-                  >
-                    <Select placeholder="Choose room" options={props.roomData} />
-                  </Form.Item>
-
-                  <Form.Item>
-                    <Button danger onClick={() => remove(name)}>
-                      Remove
-                    </Button>
-                  </Form.Item>
-                </Card>
-            ))} 
-
-              <Form.Item>
-                <Button onClick={() => add()} block>
-                  Add Time Slot
-                </Button>
-              </Form.Item>
-            </Space>
-            )} 
-        </Form.List>
-        
-      </Form> */}
