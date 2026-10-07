@@ -10,6 +10,7 @@ import CourseView from '../views/courseView';
 import CurriculumView from '../views/curriculumView';
 import AttendanceView from '../views/attendanceView';
 import AttendancePage from '../pages/attendancePage';
+import ProtectedRoute from './protectRoute';
 
 export const PATH = {
   MAIN: '/',
@@ -30,16 +31,21 @@ export default function CustomRoute() {
   <BrowserRouter>
     <Routes>
       <Route path={`/${PATH.LOGIN}`} element={<LoginPage />} />
-      {/* Add private route */}
-      <Route path="/" element={<MenuPage />} >
-        <Route path={PATH.STUDENT} element={<StudentView />} />
-        <Route path={PATH.TEACHER} element={<TeacherView />} />
-        <Route path={PATH.CLASSROOM} element={<RoomView />} />
-        <Route path={PATH.COURSE} element={<CourseView />} />
-        <Route path={PATH.CURRICULUM} element={<CurriculumView />} />
-        <Route path={PATH.ATTENDANCE} element={<AttendanceView />} />
+      <Route path="/" element={<MenuPage />}>
+        <Route element={<ProtectedRoute allowedGroup={["admin"]}/>}>
+          <Route path={PATH.STUDENT} element={<StudentView />} />
+          <Route path={PATH.TEACHER} element={<TeacherView />} />
+          <Route path={PATH.CLASSROOM} element={<RoomView />} />
+          <Route path={PATH.COURSE} element={<CourseView />} />
+          <Route path={PATH.CURRICULUM} element={<CurriculumView />} />
+        </Route>
+        <Route element={<ProtectedRoute allowedGroup={["teacher", "admin"]}/>}>
+          <Route path={PATH.ATTENDANCE} element={<AttendanceView />} />
+        </Route>
       </Route>
-      <Route path={`/${PATH.ATTENDANCE}/:courseId/:sessionId`} element={<AttendancePage />}/>
+      <Route element={<ProtectedRoute allowedGroup={["teacher", "admin"]}/>}>
+        <Route path={`/${PATH.ATTENDANCE}/:courseId/:sessionId`} element={<AttendancePage />}/>
+      </Route>
       <Route path="*" element={<p>Error kub 404</p>}></Route>
     </Routes>
   </BrowserRouter>

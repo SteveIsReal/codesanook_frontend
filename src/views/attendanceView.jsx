@@ -1,14 +1,14 @@
-import { Button, Table } from "antd";
+import { Button, Input } from "antd";
 import { useState, useEffect } from "react"
 import { URL_CLASSROOM } from "../constants/urls";
 import { PlusCircleOutlined } from "@ant-design/icons";
-import axios, { create } from 'axios'
 import SessionHistoryModal from "../components/sessionHistoryModal";
 import ViewTable from "../components/viewTable";
 
 export default function AttendanceView() {
 
   const [refresh, setRefresh] = useState(0)
+  const [filter, setFilter] = useState(null)
   const [courseSessionData, setCourseSessionData] = useState(null)
 
   const closeModal = () => {
@@ -17,6 +17,12 @@ export default function AttendanceView() {
 
   const refreshTable = () => {
     setRefresh(refresh + 1)
+  }
+
+  const onSearch = (value, _e, info) => {
+    console.log(_e)
+    setFilter(`name=${value}`)
+    refreshTable()
   }
 
   const courseColumn = [
@@ -54,7 +60,8 @@ export default function AttendanceView() {
     <>
     <SessionHistoryModal sessionData={courseSessionData} closeModal={closeModal}/>
     <h1>Attendance</h1> 
-    <ViewTable urls={URL_CLASSROOM.COURSE} columns={courseColumn} refresh={refresh}/>
+    <Input.Search placeholder="Search course" onSearch={onSearch} />
+    <ViewTable urls={`${URL_CLASSROOM.COURSE}?${filter ?? ""}`} columns={courseColumn} refresh={refresh} search={true}/>
     </>
   )
 }

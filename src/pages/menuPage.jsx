@@ -1,10 +1,11 @@
-import { Layout, Menu, theme, Image, Button } from 'antd'
+import { Layout, Menu, theme, Image, Button, Typography } from 'antd'
 import React, { useEffect } from 'react'
 import logo from '../assets/logo.png'
 import { Outlet, replace, useNavigate } from 'react-router';
 import axios from 'axios';
 import { PATH } from '../routes/customRoute';
-import { LogoutOutlined, QqOutlined } from '@ant-design/icons';
+import { LogoutOutlined } from '@ant-design/icons';
+import useAuth from '../context/authContext';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -31,6 +32,13 @@ const items = [
 export default function MenuPage() {
 
     const navigate = useNavigate();
+    const { logout, user } = useAuth()
+    const isAdmin = user?.groups?.includes("admin")
+
+    const onLogout = () => {
+      logout()
+      navigate(`/${PATH.LOGIN}`)
+    }
 
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -46,20 +54,23 @@ export default function MenuPage() {
         axios.defaults.headers.common = { 'Authorization' : `Bearer ${token}`}
       }
       else {
-        navigate(PATH.LOGIN, replace)
+        navigate(`/${PATH.LOGIN}`, replace)
       }
     }, [])  
 
     return (
     <>
-      <Layout hasSider>
+      <Layout hasSider={isAdmin}>
+        { isAdmin &&
         <Sider style={siderStyle}>
           <Image src={logo} preview={false} style={{height:"20vh", minHeight:"150px"}}></Image>
           <Menu onClick={onClick} mode="inline" items={items}></Menu>
         </Sider>
+        }
         <Layout>
           <Header style={{ padding: 0, paddingRight: "1vw", background: colorBgContainer, display: 'flex', alignItems: 'center', flexDirection: 'row-reverse'}}>
-            <Button icon={<LogoutOutlined/>}>Log out</Button>
+            <Button icon={<LogoutOutlined/>} onClick={onLogout}>Log out</Button>
+            <Typography>{}</Typography>
           </Header>
           <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
             <div style={{

@@ -18,5 +18,7 @@ export const URL_MEMBER = {
 };
 
 export const URL_TOKEN = {
-  TOKEN: '/api/token/'
+  TOKEN: '/auth/token/',
+  LOGOUT: '/auth/logout/',
+  ME: '/auth/me'
 }

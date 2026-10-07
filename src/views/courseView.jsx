@@ -7,6 +7,7 @@ import dayjs from "dayjs"
 import { URL_CLASSROOM, URL_MEMBER } from "../constants/urls"
 import SelectTimeModal from "../components/selectTimeModal";
 import ViewTable from "../components/viewTable";
+import Search from "antd/es/input/Search";
 
 export default function CourseView(){
 
@@ -19,6 +20,7 @@ export default function CourseView(){
     const [editCourseData, setEditCourseData] = useState(null)
     const [isCreateCourse, setIsCreateCourse] = useState(false)
     const [isViewTimeSlot, setIsViewTimeSlot] = useState(false)
+    const [filter, setFilter] = useState(null)
 
     const refreshTable = () => {
         setRefresh(refresh + 1)
@@ -61,6 +63,11 @@ export default function CourseView(){
 
     const closeTimeModal = () => {
         setIsViewTimeSlot(false)
+    } 
+
+    const onSearch = (value, _e, info) => {
+        setFilter(`name=${value}`)
+        refreshTable()
     }
 
     const courseColumns = [
@@ -101,7 +108,8 @@ export default function CourseView(){
         <Space orientation="vertical" size={"middle"} style={{display:"flex"}}>
         <Button type="primary" onClick={() => setIsCreateCourse(true)}>Create</Button>
         <Button type="primary" onClick={() => setIsViewTimeSlot(true)}>View Time Slot</Button>
-        <ViewTable urls={URL_CLASSROOM.COURSE} columns={courseColumns} refresh={refresh}/>
+        <Search placeholder="Search course" onSearch={onSearch} />
+        <ViewTable urls={`${URL_CLASSROOM.COURSE}?${filter ?? ""}`} columns={courseColumns} refresh={refresh} search={true}/>
         </Space>
         <CourseModal 
         isCreateCourse={isCreateCourse}

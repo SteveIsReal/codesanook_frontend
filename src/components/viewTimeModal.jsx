@@ -60,7 +60,7 @@ export default function ViewTimeModal(props) {
   return (
     <>
     <EditTimeModal roomData={props.roomData} closeEditTimeSlot={closeEditTimeSlot} isCreateTimeSlot={isCreateTimeSlot} editTimeSlotData={editTimeSlotData} />
-    <Modal open={props.isViewTimeSlot} onCancel={props.onCancel} onOk={form.submit} closeIcon={false} width={"75%"}>
+    <Modal open={props.isViewTimeSlot} footer={<Button key="back" onClick={props.onCancel}>Back</Button>} closeIcon={false} width={"75%"}>
       <Button icon={<PlusOutlined/>} onClick={() => setIsCreateTimeSlot(true)} type="dashed" block>Add time slot</Button>
       <ViewTable urls={URL_CLASSROOM.TIMESLOT} columns={timeSlotColumns} refresh={refresh}/>
     </Modal>
