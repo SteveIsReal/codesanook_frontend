@@ -20,7 +20,6 @@ export default function AttendanceView() {
   }
 
   const onSearch = (value, _e, info) => {
-    console.log(_e)
     setFilter(`name=${value}`)
     refreshTable()
   }

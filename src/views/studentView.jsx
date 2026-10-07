@@ -1,6 +1,6 @@
 import React, { use, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
-import { Space, Table, Button, Flex, Popconfirm, InputNumber, message } from "antd";
+import { Space, Table, Button, Flex, Popconfirm, InputNumber, message, Input } from "antd";
 import { EditOutlined, EyeFilled, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from "axios";
 import StudentModal from "../components/studentModal";
@@ -10,7 +10,6 @@ import ViewTable from "../components/viewTable";
 
 export default function StudentView(){
 
-    const [studentData, setStudentData] = useState([])
     const [isCreateStudent, setIsCreateStudent] = useState(false)
     const [editStudentData, setEditStudentData] = useState(null)
     const [schoolList, setSchoolList] = useState([])
@@ -19,10 +18,16 @@ export default function StudentView(){
     const [refresh, setRefresh] = useState(0)
     const [showTransactionModal, setShowTransactionModal] = useState(null)
     const [messageApi, holder] = message.useMessage()
+    const [filter, setFilter] = useState(null)
     
 
     const refreshTable = async () => {
         setRefresh(refresh + 1)
+    }
+
+    const onSearch = async (value, _e, info) => {
+        setFilter(`search=${value}`)
+        refreshTable()
     }
 
     const fetchSchoolList = async () => {
@@ -108,7 +113,8 @@ export default function StudentView(){
         
         <Space orientation="vertical" size="medium" style={{display : "flex"}}>
             <Button onClick={() => setIsCreateStudent(true)} type="primary">Add Student</Button>
-            <ViewTable urls={URL_MEMBER.STUDENT} columns={studentColumns} refresh={refresh} getCount={setTotalStudent}/> 
+            <Input.Search onSearch={onSearch} placeholder="Search student"/>
+            <ViewTable urls={`${URL_MEMBER.STUDENT}?${filter ?? ""}`} columns={studentColumns} refresh={refresh} getCount={setTotalStudent} search={true}/> 
         </Space>
         <TransactionModal studentId={showTransactionModal} closeTransactionModal={closeTransactionModal}/>
         </>

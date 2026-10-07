@@ -34,7 +34,7 @@ export default function CourseView(){
 
     const fetchStudent = async () => {
         const response = await axios.get(URL_MEMBER.STUDENT_REGISTERED)
-        const map_data = response.data.results.map(d => ({'value': d.id, 'label': d.name}))
+        const map_data = response.data.map(d => ({'value': d.id, 'label': d.name}))
         setStudentData(map_data)
     }
 
