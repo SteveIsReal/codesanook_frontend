@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Button, Typography, Space, Form } from "antd";
-import CreateSessionForm from "../components/createSessionForm";
-import SessionHistoryModal from '../components/sessionHistoryModal';
+import CreateSessionForm from "../components/CreateSessionForm";
+import SessionHistoryModal from '../components/SessionHistoryModal';
 import axios from "axios"
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";

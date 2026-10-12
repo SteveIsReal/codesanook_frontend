@@ -1,27 +1,33 @@
 
 import React from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router'
-import MenuPage from '../pages/menuPage'
-import LoginPage from '../pages/loginPage'
-import StudentView from '../views/studentView';
-import TeacherView from '../views/teacherView';
-import RoomView from '../views/roomView';
-import CourseView from '../views/courseView';
-import CurriculumView from '../views/curriculumView';
-import AttendanceView from '../views/attendanceView';
-import AttendancePage from '../pages/attendancePage';
-import ProtectedRoute from './protectRoute';
+import RegisterLeadPage from '../pages/RegisterLeadPage';
+import MenuPage from '../pages/MenuPage'
+import LoginPage from '../pages/LoginPage'
+import StudentView from '../views/StudentView';
+import TeacherView from '../views/TeacherView';
+import RoomView from '../views/RoomView';
+import CourseView from '../views/CourseView';
+import CurriculumView from '../views/CurriculumView';
+import AttendanceView from '../views/AttendanceView';
+import LeadView from '../views/LeadView'
+import AttendancePage from '../pages/AttendancePage';
+import ProtectedRoute from './ProtectRoute';
+import SchoolView from '../views/SchoolView';
 
 export const PATH = {
   MAIN: '/',
   LOGIN: 'login',
+  REGISTER_LEAD: 'registerlead',
 
+  LEAD: 'lead',
   STUDENT: 'student',
   TEACHER: 'teacher',
   CLASSROOM: 'classroom',
   COURSE: 'course',
   CURRICULUM: 'curriculum',
-  ATTENDANCE: 'attendance'
+  ATTENDANCE: 'attendance',
+  SCHOOL: 'school',
 
 };
 
@@ -31,6 +37,7 @@ export default function CustomRoute() {
   <BrowserRouter>
     <Routes>
       <Route path={`/${PATH.LOGIN}`} element={<LoginPage />} />
+      <Route path={`/${PATH.REGISTER_LEAD}`} element={<RegisterLeadPage/>}/>
       <Route path="/" element={<MenuPage />}>
         <Route element={<ProtectedRoute allowedGroup={["admin"]}/>}>
           <Route path={PATH.STUDENT} element={<StudentView />} />
@@ -38,6 +45,8 @@ export default function CustomRoute() {
           <Route path={PATH.CLASSROOM} element={<RoomView />} />
           <Route path={PATH.COURSE} element={<CourseView />} />
           <Route path={PATH.CURRICULUM} element={<CurriculumView />} />
+          <Route path={PATH.LEAD} element={<LeadView />}/>
+          <Route path={PATH.SCHOOL} element={<SchoolView/>}/>
         </Route>
         <Route element={<ProtectedRoute allowedGroup={["teacher", "admin"]}/>}>
           <Route path={PATH.ATTENDANCE} element={<AttendanceView />} />

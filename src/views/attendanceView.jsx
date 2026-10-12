@@ -2,8 +2,8 @@ import { Button, Input } from "antd";
 import { useState, useEffect } from "react"
 import { URL_CLASSROOM } from "../constants/urls";
 import { PlusCircleOutlined } from "@ant-design/icons";
-import SessionHistoryModal from "../components/sessionHistoryModal";
-import ViewTable from "../components/viewTable";
+import SessionHistoryModal from "../components/SessionHistoryModal";
+import ViewTable from "../components/ViewTable";
 
 export default function AttendanceView() {
 

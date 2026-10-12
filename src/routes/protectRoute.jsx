@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router"
 import useAuth from '../context/authContext'
-import { PATH } from "./customRoute";
+import { PATH } from "./CustomRoute";
 
 
 export default function ProtectedRoute({allowedGroup}) {
@@ -11,9 +11,6 @@ export default function ProtectedRoute({allowedGroup}) {
   if (!user) {
     return <Navigate to={PATH.LOGIN} replace/>
   }
-  console.log(user)
-  console.log(user.groups)
-  console.log(allowedGroup)
   const allowed = user.groups.some(group => allowedGroup.includes(group))
   if (!allowed) {
     return <Navigate to={PATH.ATTENDANCE} replace/>

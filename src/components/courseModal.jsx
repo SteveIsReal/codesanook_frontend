@@ -3,10 +3,12 @@ import { Form, Input, InputNumber, message, Modal, Select, Space, TimePicker, Bu
 import axios from "axios";
 import dayjs from "dayjs";
 import { URL_CLASSROOM } from "../constants/urls";
+import { PropaneSharp } from "@mui/icons-material";
 
 export default function CourseModal(props){
 
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false)
     const [messageApi, contextHolder] = message.useMessage();
 
     const Sub = () => {
@@ -22,26 +24,31 @@ export default function CourseModal(props){
         console.log(formData.students.map(d => d.value ? true: false))
         
         try{
+            setLoading(true)
             const response = props.isCreateCourse ? 
             await axios.post(URL_CLASSROOM.COURSE, requestData) : await axios.patch(`${URL_CLASSROOM.COURSE}${props.editCourseData.id}/`, requestData)
-            console.log(response)
-            onCancel()
+            props.closeModal(true)
         }
         catch (err) {
             console.log(err.response.data)
             messageApi.open({type: 'error', content: err.response.data?.students.map(v => `${v}`)})
+        } finally {
+            setLoading(false)
         }
     }
 
-    const onCancel = () => {
-        props.closeModal()
-    }
-
     return (
-    <Modal open={props.isCreateCourse || props.editCourseData != null} onCancel={onCancel} onOk={onSubmit}>
+    <Modal 
+    open={props.isCreateCourse || props.editCourseData != null} 
+    onCancel={() => props.closeModal(false)} 
+    onOk={onSubmit}
+    getContainer={false}
+    mask={{blur: true}}
+    loading={loading}
+    >
         {contextHolder}
         <h2>Create course</h2>
-        <Form form={form}>
+        <Form form={form} layout="vertical" >
             <Form.Item label="Course Name" name="name" rules={[{required:true}]}>
                 <Input />
             </Form.Item>

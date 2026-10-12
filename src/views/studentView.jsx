@@ -1,19 +1,29 @@
 import React, { use, useEffect, useState } from "react";
+
+import NonPaymentIcon from "@mui/icons-material/Warning"
+import EditIcon from "@mui/icons-material/EditOutlined"
+import AddIcon from "@mui/icons-material/AddCircleOutlineOutlined"
+import MinusIcon from "@mui/icons-material/DoNotDisturbOnOutlined"
+import ViewCreditIcon from "@mui/icons-material/VisibilityOutlined"
+import AddStudentIcon from "@mui/icons-material/PersonAddOutlined"
+
 import { useSearchParams } from "react-router";
-import { Space, Table, Button, Flex, Popconfirm, InputNumber, message, Input } from "antd";
-import { EditOutlined, EyeFilled, MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { Space, Table, Button, Flex, Popconfirm, InputNumber, message, Input, Tag, Typography } from "antd";
 import axios from "axios";
-import StudentModal from "../components/studentModal";
-import TransactionModal from "../components/transactionModal";
+import StudentModal from "../components/LeadModal";
+import TransactionModal from "../components/TransactionModal";
 import { URL_MEMBER } from "../constants/urls";
-import ViewTable from "../components/viewTable";
+import ViewTable from "../components/ViewTable";
+import { flexWrapValues } from "antd/es/flex/utils";
+
+import "../styles/table.css"
 
 export default function StudentView(){
 
     const [isCreateStudent, setIsCreateStudent] = useState(false)
     const [editStudentData, setEditStudentData] = useState(null)
     const [schoolList, setSchoolList] = useState([])
-    const [changeCredit, setChangeCredit] = useState(0)
+    const [changeCredit, setChangeCredit] = useState(1)
     const [totalStudent, setTotalStudent] = useState(0)
     const [refresh, setRefresh] = useState(0)
     const [showTransactionModal, setShowTransactionModal] = useState(null)
@@ -21,7 +31,7 @@ export default function StudentView(){
     const [filter, setFilter] = useState(null)
     
 
-    const refreshTable = async () => {
+    const refreshTable = () => {
         setRefresh(refresh + 1)
     }
 
@@ -45,17 +55,36 @@ export default function StudentView(){
     }, [])
 
     const studentColumns = [
-        {title : 'Name', dataIndex: "name", key:'name'},
-        {title : 'Course', dataIndex: "course", key:'course', render : (data) => (
-        <ul>{data.map(d => (<li>{d}</li>))}</ul>
+        {title : 'Name', dataIndex: "name", key:'name', render: (data, record) => (
+            <Flex gap="medium" style={{alignItems: "center"}} wrap>
+            <Typography style={{fontWeight: "bold"}}>{data}</Typography>
+            {record.current_credit < 0 && 
+            <Tag 
+            icon={<NonPaymentIcon fontSize="small" />} 
+            color={"red"} variant="filled" 
+            style={{alignItem : "center", padding: "0.3vw", display: "flex", borderRadius: "5vw"}}
+            />}
+            </Flex>
         )},
-        {title : 'Credit', dataIndex: "current_credit", key:'current_credit'},
-        {title : 'Action', key:'email', render : (_, record) => (
+        {title : 'Course', dataIndex: "course", key:'course', width:"30%", render : (data) => (
+        <Flex wrap gap="small">
+            {data.map(d => (<Tag color={"gray"} variant="filled" style={{padding: "0.5vw", borderRadius: "5vw"}}>{d}</Tag>))}
+        </Flex>
+        )},
+        {title : 'Credit', dataIndex: "current_credit", width:"10%", key:'current_credit', render : (data) => (
+            <Tag 
+            color={data > 0 ? "green" : data === 0 ? "default" : "red"} 
+            variant="filled" 
+            style={{fontWeight: "bold", padding: "0.5vw", borderRadius: "5vw"}}>
+                {data} Credits
+            </Tag>
+        )},
+        {title : 'Action', key:'email', width:'10%' ,render : (_, record) => (
             <Flex gap={"medium"}>
-            <Button onClick={() => (setEditStudentData(record))} icon={<EditOutlined />} color="yellow" variant=""/>
+            <Button onClick={() => (setEditStudentData(record.lead_obj))} icon={<EditIcon />} type="text"/>
             <Popconfirm 
                 title="Add credit"
-                description={<InputNumber min={1} defaultValue={1} onChange={value => (setChangeCredit(value))}/>}
+                description={<InputNumber min={1} defaultValue={changeCredit} onChange={value => (setChangeCredit(value))}/>}
                 onConfirm={async () => {
                     const response = await axios.post(
                         URL_MEMBER.ADD_CREDIT, 
@@ -65,16 +94,17 @@ export default function StudentView(){
                         } 
                     )
                     message.success("Add credit successfully!")
+                    setChangeCredit(1)
                     refreshTable()
                 }}
                 onCancel={() => (1)}
                 okText="Send"
                 cancelText="Cancel">
-                <Button color="green" variant="solid" icon={<PlusOutlined />} ></Button>
+                <Button icon={<AddIcon />} type="text"></Button>
             </Popconfirm>
             <Popconfirm 
                 title="Use credit"
-                description={<InputNumber min={1} defaultValue={1} onChange={value => (setChangeCredit(value))}/>}
+                description={<InputNumber min={1} defaultValue={changeCredit} onChange={value => (setChangeCredit(value))}/>}
                 onConfirm={async () => {
                     const response = await axios.post(
                         URL_MEMBER.USE_CREDIT, 
@@ -84,16 +114,15 @@ export default function StudentView(){
                         } 
                     )
                     message.success("Update successfully!")
+                    setChangeCredit(1)
                     refreshTable()
                 }}
                 onCancel={() => (1)}
                 okText="Send"
                 cancelText="Cancel">
-                <Button color="danger" variant="solid" icon={<MinusOutlined />} onClick={() => 1}></Button>
+                <Button disabled={record.current_credit < 0} icon={<MinusIcon />} type="text"></Button>
             </Popconfirm>
-            <Button onClick={() => {setShowTransactionModal(record.id)}} icon={<EyeFilled />}/>
-
-            {/* <Button color="danger" variant="solid" onClick={() => 1}>-</Button> */}
+            <Button onClick={() => {setShowTransactionModal(record.id)}} icon={<ViewCreditIcon />} type="text"/>
             </Flex>
         )},
     ]
@@ -101,19 +130,38 @@ export default function StudentView(){
     return (
         <>
         {holder}
-        <h1>Student</h1>
-        <h3>Total : {totalStudent}</h3>
 
-        <StudentModal isCreateStudent={isCreateStudent} editStudentData={editStudentData} schoolList={schoolList} 
+        <StudentModal editLeadData={editStudentData} schoolList={schoolList}
         onCancel={() => {
-            setIsCreateStudent(false);
+            // setIsCreateStudent(false);
             setEditStudentData(null);
             refreshTable()
-            }}/>
+        }}/>
         
-        <Space orientation="vertical" size="medium" style={{display : "flex"}}>
-            <Button onClick={() => setIsCreateStudent(true)} type="primary">Add Student</Button>
-            <Input.Search onSearch={onSearch} placeholder="Search student"/>
+        <Space orientation="vertical" size="medium" style={{display : "flex"}} className="card">
+            <Flex style={{alignItems:"center", justifyContent:"space-between"}}>
+                <Flex style={{alignItems:"center"}} gap={"medium"}>
+                    <Typography.Title>Student</Typography.Title>
+                    <Tag 
+                    color="gray" 
+                    style={{fontWeight: "bold", padding: "0.5vw", borderRadius: "5vw"}}
+                    >
+                        {totalStudent} records
+                    </Tag>
+                </Flex>
+                {/* <Button 
+                color="geekblue"
+                // onClick={() => setIsCreateStudent(true)} 
+                type="primary"
+                icon={<AddStudentIcon/>}
+                size="large"
+                >
+                    Add Student
+                </Button> */}
+            </Flex>
+        </Space>
+        <Space className="card" orientation="vertical" size="medium" style={{display : "flex"}}>
+            <Input.Search onSearch={onSearch} placeholder="Search student" />
             <ViewTable urls={`${URL_MEMBER.STUDENT}?${filter ?? ""}`} columns={studentColumns} refresh={refresh} getCount={setTotalStudent} search={true}/> 
         </Space>
         <TransactionModal studentId={showTransactionModal} closeTransactionModal={closeTransactionModal}/>

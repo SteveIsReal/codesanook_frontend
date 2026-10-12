@@ -40,7 +40,12 @@ export default function TeacherModal(props) {
     }
 
     return (
-        <Modal open={props.editData != null || props.isAddTeacher} onCancel={() => {props.setEditData(null); props.setIsAddTeacher(false)}} onOk={submitForm}>
+        <Modal 
+        open={props.editData != null || props.isAddTeacher} 
+        onCancel={() => {props.setEditData(null); props.setIsAddTeacher(false)}} 
+        onOk={submitForm}
+        mask={{blur: true}}
+        >
             {contentHolder}
             <h2>{props.isAddTeacher ? "Create" : "Edit"} Teacher</h2>
             <Form validateMessages={{ required: 'Please input your ${label}'}} form={form}>

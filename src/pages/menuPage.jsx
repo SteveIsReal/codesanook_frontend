@@ -1,11 +1,20 @@
 import { Layout, Menu, theme, Image, Button, Typography } from 'antd'
+
+import StudentIcon from '@mui/icons-material/School'
+import AssignmentIcon from "@mui/icons-material/Assignment"
+import TeacherIcon from "@mui/icons-material/Person"
+import RoomIcon from "@mui/icons-material/MeetingRoom"
+import CurriculumIcon from "@mui/icons-material/Book"
+import LogoutIcon from "@mui/icons-material/Logout"
+import AttendanceIcon from "@mui/icons-material/FactCheck"
+
 import React, { useEffect } from 'react'
 import logo from '../assets/logo.png'
 import { Outlet, replace, useNavigate } from 'react-router';
 import axios from 'axios';
-import { PATH } from '../routes/customRoute';
-import { LogoutOutlined } from '@ant-design/icons';
+import { PATH } from '../routes/CustomRoute';
 import useAuth from '../context/authContext';
+import { CorporateFareOutlined, School, Verified, VerifiedOutlined } from '@mui/icons-material';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -21,12 +30,14 @@ const siderStyle = {
 };
 
 const items = [
-  {key:"student" , label:"Student"},
-  {key:"course" , label:"Course"},
-  {key:"teacher" , label:"Teacher"},
-  {key:"classroom" , label:"Classroom"},
-  {key:"curriculum", label:"Curriculum"},
-  {key:"attendance", label:"Attendance"}
+  {key:"lead", label:"Leads", icon:(<VerifiedOutlined />)},
+  {key:"student" , label:"Students", icon:(<StudentIcon />)},
+  {key:"course" , label:"Courses", icon:(<AssignmentIcon/>)},
+  {key:"teacher" , label:"Teachers", icon:(<TeacherIcon />)},
+  {key:"classroom" , label:"Classrooms", icon:(<RoomIcon />)},
+  {key:"curriculum", label:"Curriculums", icon:(<CurriculumIcon />)},
+  {key:"attendance", label:"Attendances", icon:(<AttendanceIcon />)},
+  {key:"school", label:"Schools", icon:(<CorporateFareOutlined/>)},
 ]
 
 export default function MenuPage() {
@@ -69,18 +80,18 @@ export default function MenuPage() {
         }
         <Layout>
           <Header style={{ padding: 0, paddingRight: "1vw", background: colorBgContainer, display: 'flex', alignItems: 'center', flexDirection: 'row-reverse'}}>
-            <Button icon={<LogoutOutlined/>} onClick={onLogout}>Log out</Button>
+            <Button icon={<LogoutIcon />} onClick={onLogout}>Logout</Button>
             <Typography>{}</Typography>
           </Header>
           <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-            <div style={{
+            {/* <div style={{
               padding: 24,
               textAlign: 'center',
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
-            }}>
+            }}> */}
               <Outlet />
-            </div>
+            {/* </div> */}
 
           </Content>
         </Layout>

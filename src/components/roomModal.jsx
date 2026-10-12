@@ -33,7 +33,12 @@ export default function RoomModal(props) {
     }, [props.editRoomData])
 
     return (
-    <Modal open={props.isCreateRoom || props.editRoomData} onOk={Submit} onCancel={cancel}>
+    <Modal 
+    open={props.isCreateRoom || props.editRoomData} 
+    onOk={Submit} 
+    onCancel={cancel}
+    mask={{blur: true}}
+    >
         <h1>{props.isCreateRoom ? "Add" : "Edit"} room</h1>
         <Form form={form}>
             <Form.Item label="Name" name="name" rules={[{required : true}]}>

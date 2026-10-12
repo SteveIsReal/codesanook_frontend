@@ -3,7 +3,7 @@ import { useState, useEffect, Fragment } from "react"
 import axios, { create } from 'axios'
 import { URL_CLASSROOM } from "../constants/urls";
 import { PRESENT_OPTIONS } from "../constants/const_string";
-import { PATH } from "../routes/customRoute"
+import { PATH } from "../routes/CustomRoute"
 import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 

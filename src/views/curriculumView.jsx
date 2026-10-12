@@ -1,9 +1,9 @@
 import { unstable_useCacheRefresh, useEffect, useState } from "react";
 import { Button, Form, Modal, Space, Card, TimePicker, Select, Table } from "antd";
 import axios from "axios"
-import CurriculumModal from "../components/curriculumModal";
+import CurriculumModal from "../components/CurriculumModal";
 import { URL_CLASSROOM } from "../constants/urls";
-import ViewTable from "../components/viewTable";
+import ViewTable from "../components/ViewTable";
 
 export default function CurriculumView(){
 

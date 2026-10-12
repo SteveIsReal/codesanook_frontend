@@ -47,7 +47,12 @@ export default function CurriculumModal(props){
     }, [props.editCurriculumData, props.isCreateCurriculum])
 
     return (
-    <Modal open={props.editCurriculumData || props.isCreateCurriculum} onCancel={props.cancel} onOk={Submit}>
+    <Modal 
+    open={props.editCurriculumData || props.isCreateCurriculum}
+    onCancel={props.cancel} 
+    onOk={Submit}
+    mask={{blur: true}}
+    >
         {contentHolder}
         <h2>{props.isCreateCurriculum ? "Create" : "Edit"} Curriculum</h2>
         <Form form={form}>

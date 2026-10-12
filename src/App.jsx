@@ -1,11 +1,20 @@
 import React from 'react'
 import CustomRoute from './routes/customRoute';
-
+import {ConfigProvider} from 'antd'
+import "./app.css"
 
 function App() {
 
-  return (
-    <CustomRoute/>
+  return ( 
+    <ConfigProvider
+    theme={{
+      token : {
+        fontFamily: "Nunito, sans-serif",
+      }
+    }}
+    >
+      <CustomRoute/>
+    </ConfigProvider>
   )
 }
 

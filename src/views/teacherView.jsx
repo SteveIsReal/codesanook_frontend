@@ -1,10 +1,10 @@
 import React from "react";
 import axios from 'axios'
-import TeacherModal from "../components/teacherModal";
+import TeacherModal from "../components/TeacherModal";
 import { Table, Button, Space } from "antd"
 import { useState, useEffect } from "react"
 import { URL_CLASSROOM, URL_MEMBER } from "../constants/urls";
-import ViewTable from "../components/viewTable";
+import ViewTable from "../components/ViewTable";
 
 export default function TeacherView(){
 

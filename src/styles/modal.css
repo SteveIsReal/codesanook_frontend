@@ -1,0 +1,24 @@
+
+.modal {
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.modal .ant-modal-header {
+  padding: 24px;
+  background-color: #eff3ff;
+  margin: -20px -24px 20px -24px;
+  color: #dee2ff;
+}
+
+.icon {
+  padding: 10px 12px 4px 12px;
+  border-radius: 12px;
+  background-color: #a8bfff;
+}
+
+.modal-header {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+

@@ -1,10 +1,9 @@
 import React from 'react';
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import { useNavigate } from 'react-router';
 import axios from 'axios'
-import Password from 'antd/es/input/Password';
 import { URL_TOKEN } from '../constants/urls';
-import { PATH } from '../routes/customRoute';
+import { PATH } from '../routes/CustomRoute';
 import useAuth from '../context/authContext';
 
 axios.defaults.baseURL = 'http://localhost:8000'

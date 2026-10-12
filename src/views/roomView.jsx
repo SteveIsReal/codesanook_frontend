@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Space,Table,Button } from "antd";
 import axios from "axios";
-import RoomModal from "../components/roomModal";
-import ViewTable from "../components/viewTable"
+import RoomModal from "../components/RoomModal";
+import ViewTable from "../components/ViewTable"
 import { URL_CLASSROOM } from "../constants/urls";
 
 export default function RoomView() {

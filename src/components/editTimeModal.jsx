@@ -40,7 +40,15 @@ export default function editTimeModal(props){
   }, [props.isCreateTimeSlot, props.editTimeSlotData])
 
   return (
-    <Modal open={props.isCreateTimeSlot || props.editTimeSlotData} onCancel={props.closeEditTimeSlot} onOk={onSubmit} closeIcon={false}>
+    <Modal 
+    open={props.isCreateTimeSlot || props.editTimeSlotData} 
+    onCancel={props.closeEditTimeSlot} 
+    onOk={onSubmit} 
+    closeIcon={false}
+    mask={{blur: true}}
+    getContainer={false}
+    zIndex={99999}
+    >
     <Form form={form}>
       <Form.Item label="Time" name="time" rules={[{ required: true, message: "Please select time!" }]}>
         <TimePicker.RangePicker format="HH:mm" />
