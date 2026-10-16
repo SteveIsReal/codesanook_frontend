@@ -1,9 +1,11 @@
 import { unstable_useCacheRefresh, useEffect, useState } from "react";
-import { Button, Form, Modal, Space, Card, TimePicker, Select, Table } from "antd";
+import { Button, Form, Modal, Space, Card, TimePicker, Select, Table, Flex, Typography } from "antd";
 import axios from "axios"
 import CurriculumModal from "../components/CurriculumModal";
 import { URL_CLASSROOM } from "../constants/urls";
 import ViewTable from "../components/ViewTable";
+import { AddCircleOutlineOutlined } from "@mui/icons-material";
+import '../styles/table.css'
 
 export default function CurriculumView(){
 
@@ -43,8 +45,11 @@ export default function CurriculumView(){
         isCreateCurriculum={isCreateCurriculum}
         cancel={cancel}
         />
-        <Space orientation="vertical" size="medium" style={{display : "flex"}}>
-            <Button onClick={() => setIsCreateCurriculum(true)} type="primary">Add Curriculum</Button>
+        <Flex align="center" justify="space-between" className="card">
+            <Typography.Title>Curriculum</Typography.Title>
+            <Button onClick={() => setIsCreateCurriculum(true)} type="primary" size="large" icon={<AddCircleOutlineOutlined/>}>Curriculum</Button>
+        </Flex>
+        <Space orientation="vertical" size="medium" style={{display : "flex"}} className="card">
             <ViewTable urls={URL_CLASSROOM.CURRICULUM} columns={curriculumColumns} refresh={refresh}/>
         </Space>
     </>)

@@ -7,7 +7,7 @@ import MinusIcon from "@mui/icons-material/DoNotDisturbOnOutlined"
 import ViewCreditIcon from "@mui/icons-material/VisibilityOutlined"
 import AddStudentIcon from "@mui/icons-material/PersonAddOutlined"
 
-import { useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { Space, Table, Button, Flex, Popconfirm, InputNumber, message, Input, Tag, Typography } from "antd";
 import axios from "axios";
 import StudentModal from "../components/LeadModal";
@@ -17,6 +17,7 @@ import ViewTable from "../components/ViewTable";
 import { flexWrapValues } from "antd/es/flex/utils";
 
 import "../styles/table.css"
+import { PATH } from "../routes/CustomRoute";
 
 export default function StudentView(){
 
@@ -29,6 +30,7 @@ export default function StudentView(){
     const [showTransactionModal, setShowTransactionModal] = useState(null)
     const [messageApi, holder] = message.useMessage()
     const [filter, setFilter] = useState(null)
+    const navigate = useNavigate()
     
 
     const refreshTable = () => {
@@ -81,7 +83,7 @@ export default function StudentView(){
         )},
         {title : 'Action', key:'email', width:'10%' ,render : (_, record) => (
             <Flex gap={"medium"}>
-            <Button onClick={() => (setEditStudentData(record.lead_obj))} icon={<EditIcon />} type="text"/>
+            <Button onClick={() => (navigate(`/${PATH.REGISTER_LEAD}/${record.lead_obj.id}`))} icon={<EditIcon />} type="text"/>
             <Popconfirm 
                 title="Add credit"
                 description={<InputNumber min={1} defaultValue={changeCredit} onChange={value => (setChangeCredit(value))}/>}

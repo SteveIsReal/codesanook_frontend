@@ -2,6 +2,7 @@ import React from "react";
 import axios from 'axios'
 import { Modal, Form, Input, message } from "antd";
 import { URL_MEMBER } from "../constants/urls";
+import '../styles/modal.css'
 
 
 export default function TeacherModal(props) {
@@ -45,9 +46,11 @@ export default function TeacherModal(props) {
         onCancel={() => {props.setEditData(null); props.setIsAddTeacher(false)}} 
         onOk={submitForm}
         mask={{blur: true}}
+        getContainer={false}
+        title={<h1>{props.isAddTeacher ? "Create" : "Edit"} Teacher</h1>}
+        className="modal"
         >
             {contentHolder}
-            <h2>{props.isAddTeacher ? "Create" : "Edit"} Teacher</h2>
             <Form validateMessages={{ required: 'Please input your ${label}'}} form={form}>
                 {props.isAddTeacher ? 
                 <>

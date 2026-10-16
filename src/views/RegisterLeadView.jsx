@@ -1,4 +1,4 @@
-import { Form, Input, Select, message, Button, DatePicker, Divider, Typography, Card, Flex, Grid } from "antd";
+import { Form, Input, Select, message, Button, DatePicker, Divider, Typography, Flex, Grid, Image, Avatar } from "antd";
 import PhoneInput from 'antd-phone-input';
 import axios from "axios";
 import { URL_CLASSROOM, URL_MEMBER } from "../constants/urls";
@@ -7,7 +7,8 @@ import { GRADE, RELATIONSHIP, WEEKDAYS } from "../constants/const_string";
 import dayjs from "dayjs"
 import { useNavigate } from "react-router";
 import { PATH } from "../routes/CustomRoute";
-import "../styles/table.css"
+import logo from "../assets/logo.png"
+import { UserOutlined } from "@ant-design/icons/es/icons/index";
 
 
 export default function RegisterLeadForm ({leadId}) {
@@ -91,26 +92,29 @@ export default function RegisterLeadForm ({leadId}) {
   }, [])
 
   return (
-    <Flex gap={"small"} orientation="vertical">
+    <Flex gap={"small"} orientation="vertical" align="stretch" style={{width:"100%", minWidth: 0}}>
     {holder}
-
     {/* <Card className="card"> */}
-      <Flex style={{justifyContent: "center"}}>
-        <Typography.Title>Register Form</Typography.Title>
+
+      <Flex vertical>
+        <Divider/>
+        <Typography.Title style={{fontWeight: 'bold'}}>Register Form</Typography.Title>
+        <Typography>Please enter information below.</Typography>
       </Flex>
     {/* </Card> */}
     <Divider/>
-    <Form form={form}>
+    <Form form={form} size={screens.xs ? "large" : "medium"}>
     {/* <Card className="card"> */}
-      <Typography.Title>Student Info</Typography.Title>
+      {/* <UserOutlined className="icon" style={{padding: 15  , fontSize: 'large', fontWeight: 'bold'}}/> */}
+      <Typography><h2>Student Info</h2></Typography>
       <Form.Item label="First name" name={"first_name"} rules={[{required: true}]}>
-        <Input placeholder="First Name"/>
+        <Input placeholder="Enter first Name"/>
       </Form.Item>
       <Form.Item label="Last Name" name="last_name" rules={[{required : true}]}>
-        <Input placeholder={"Last name"}/>
+        <Input placeholder={"Enter last name"}/>
       </Form.Item>
       <Form.Item label="Nickname" name="nickname" rules={[{required : true}]}>
-        <Input placeholder={"Nickname"}/>
+        <Input placeholder={"Enter nickname"}/>
       </Form.Item>
       <Form.Item layout="horizontal" label="School" name="school" rules={[{required : true}]}>
         <Select options={schoolList} placeholder={"Select school"} showSearch optionFilterProp={"label"}/>
@@ -122,54 +126,53 @@ export default function RegisterLeadForm ({leadId}) {
         <DatePicker placeholder="YYYY-MM-DD"/>
       </Form.Item>
       <Form.Item label="Interested Course" name="interested_course" rules={[{required: true}]}>
-        <Select options={curriculum} placeholder={"Select course"} mode="multiple"/>
+        <Select options={curriculum} placeholder={"Can select more than one"} mode="multiple"/>
       </Form.Item>
-      <Form.Item label="Available Day" name="available_day" rules={[{required: true}]}>
-        <Select options={WEEKDAYS} placeholder="Select day" onChange={fetchSchedule} mode="multiple"/>
+      <Form.Item label="Available Days" name="available_day" rules={[{required: true}]}>
+        <Select options={WEEKDAYS} placeholder="Select days" onChange={fetchSchedule} mode="multiple"/>
       </Form.Item>
-      <Form.Item label="Available Time" name="available_schedule" rules={[{required : true}]}>
-        <Select options={schedule} mode="multiple"/>
+      <Form.Item label="Available Times" name="available_schedule" rules={[{required : true}]}>
+        <Select options={schedule} placeholder="Select times" mode="multiple"/>
       </Form.Item>
       <Form.Item label="Acquaint" name="acquaint" rules={[{required: true}]}>
-        <Input />
+        <Input placeholder="eg., Facebook, Instagram"/>
       </Form.Item>
       <Form.Item label="Recommender" name="recommender">
-        <Input />
+        <Input placeholder="Enter recommender"/>
       </Form.Item>
     {/* </Card> */}
     <Divider/>
     {/* <Card className="card"> */}
-      <Typography.Title>Parent Info</Typography.Title>
+      {/* <Typography><h2>Parent Info</h2></Typography> */}
       <Form.Item label="First name" name="parent_first_name" rules={[{required: true}]}>
-        <Input />
+        <Input placeholder="Enter first name"/>
       </Form.Item>
       <Form.Item label="Last name" name="parent_last_name" rules={[{required: true}]}>
-        <Input />
+        <Input placeholder="Enter last name"/>
       </Form.Item>
       <Form.Item label="Relationship" name="relationship" rules={[{required: true}]}>
-        <Select options={RELATIONSHIP} placeholder="select relationship"/>
+        <Select options={RELATIONSHIP} placeholder="Select relationship"/>
       </Form.Item>
       <Form.Item label="Career" name="career">
-        <Input />
+        <Input placeholder="Enter career"/>
       </Form.Item>
       <Form.Item label="Company" name="company">
-        <Input />
+        <Input placeholder="Enter company"/>
       </Form.Item>
       <Form.Item label="Phone No." name="phone" rules={[{required: true, type: "tel"}]}>
-        <Input maxLength={10} minLength={9}/>
+        <Input placeholder="xxx-xxx-xxxx" maxLength={10} minLength={9}/>
       </Form.Item>
       <Form.Item label="Email" name="email" rules={[{required: true, type: "email"}]}>
-        <Input />
+        <Input placeholder="name@example.com"/>
       </Form.Item>
       <Form.Item label="Line ID" name="id_line" rules={[{required: true}]}>
-        <Input />
+        <Input placeholder="Enter line ID"/>
       </Form.Item>
-
-    {/* </Card> */}
+      <Divider />
       <Form.Item>
-        <Flex style={{justifyContent: screens.md ? 'flex-start' : 'center'}}>
-        {/* <Flex style={{justifyContent: 'center'}}> */}
-          <Button type="primary" onClick={onSubmit} size="large">Submit</Button>
+        <Flex style={{justifyContent: screens.xs ? 'flex-start' : 'stretch'}} vertical gap="small">
+          <Typography>Please review your information before submit.</Typography>
+          <Button type="primary" onClick={onSubmit} size="large" style={{width: screens.xs ? "100%" : "auto", alignSelf: screens.xs ? "stretch" : "flex-start"}}>Submit</Button>
         </Flex>
       </Form.Item>
     </Form>

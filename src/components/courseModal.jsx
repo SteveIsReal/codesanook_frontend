@@ -46,9 +46,11 @@ export default function CourseModal(props){
     mask={{blur: true}}
     width={"75%"}
     loading={loading}
+    title={<h1>Create course</h1>}
+    className="modal"
     >
         {contextHolder}
-        <h2>Create course</h2>
+        
         <Form form={form} layout="vertical" >
             <Form.Item label="Course Name" name="name" rules={[{required:true}]}>
                 <Input />

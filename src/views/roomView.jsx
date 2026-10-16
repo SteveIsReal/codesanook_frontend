@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Space,Table,Button } from "antd";
+import { Space,Table,Button, Typography, Flex } from "antd";
 import axios from "axios";
 import RoomModal from "../components/RoomModal";
 import ViewTable from "../components/ViewTable"
 import { URL_CLASSROOM } from "../constants/urls";
+import '../styles/table.css'
 
 export default function RoomView() {
 
@@ -29,8 +30,11 @@ export default function RoomView() {
     return (<>
 
         <RoomModal isCreateRoom={isCreateRoom} editRoomData={editRoomData} onCancel={() => {setEditRoomData(null);setIsCreateRoom(false)}} refreshTable={refreshTable}/>
-        <Space orientation="vertical" size="medium" style={{display : "flex"}}>
-            <Button onClick={() => setIsCreateRoom(true)} type="primary">Add Room</Button>
+        <Flex align="center" justify="space-between" className="card">
+            <Typography.Title>Classroom</Typography.Title>
+            <Button onClick={() => setIsCreateRoom(true)} type="primary" size="large">Add Room</Button>
+        </Flex>
+        <Space orientation="vertical" size="medium" style={{display : "flex"}} className="card">
             <ViewTable urls={URL_CLASSROOM.ROOM} columns={roomColumns} refresh={refresh}/>
         </Space>
     </>)

@@ -38,8 +38,10 @@ export default function RoomModal(props) {
     onOk={Submit} 
     onCancel={cancel}
     mask={{blur: true}}
+    title={<h1>{props.isCreateRoom ? "Add" : "Edit"} room</h1>}
+    className="modal"
     >
-        <h1>{props.isCreateRoom ? "Add" : "Edit"} room</h1>
+        
         <Form form={form}>
             <Form.Item label="Name" name="name" rules={[{required : true}]}>
                 <Input />

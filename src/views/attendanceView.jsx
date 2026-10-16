@@ -1,9 +1,10 @@
-import { Button, Input } from "antd";
+import { Button, Input, Typography, Flex } from "antd";
 import { useState, useEffect } from "react"
 import { URL_CLASSROOM } from "../constants/urls";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import SessionHistoryModal from "../components/SessionHistoryModal";
 import ViewTable from "../components/ViewTable";
+import '../styles/table.css'
 
 export default function AttendanceView() {
 
@@ -58,9 +59,13 @@ export default function AttendanceView() {
   return (
     <>
     <SessionHistoryModal sessionData={courseSessionData} closeModal={closeModal}/>
-    <h1>Attendance</h1> 
-    <Input.Search placeholder="Search course" onSearch={onSearch} />
-    <ViewTable urls={`${URL_CLASSROOM.COURSE}?${filter ?? ""}`} columns={courseColumn} refresh={refresh} search={true}/>
+    <Flex className="card">
+      <Typography.Title>Attendance</Typography.Title> 
+    </Flex>
+    <Flex className="card" gap={"small"} vertical>
+      <Input.Search placeholder="Search course" onSearch={onSearch} />
+      <ViewTable urls={`${URL_CLASSROOM.COURSE}?${filter ?? ""}`} columns={courseColumn} refresh={refresh} search={true}/>
+    </Flex>
     </>
   )
 }

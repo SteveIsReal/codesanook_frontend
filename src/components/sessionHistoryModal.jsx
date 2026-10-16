@@ -1,11 +1,13 @@
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Modal } from "antd";
+import { Button, Modal, Flex, Typography, Divider } from "antd";
 import { useEffect, useState } from "react";
 import {URL_CLASSROOM} from "../constants/urls"
 import axios from 'axios'
 import { useLocation, useNavigate } from "react-router";
 import dayjs from "dayjs";
 import ViewTable from "./ViewTable";
+import "../styles/modal.css"
+import { Schedule } from "@mui/icons-material";
 
 export default function SessionHistoryModal ({sessionData, closeModal}) {
 
@@ -37,16 +39,20 @@ export default function SessionHistoryModal ({sessionData, closeModal}) {
 
   return (
     <Modal 
-    title="History" 
+    title={<Flex gap="small" align="center"><Schedule fontSize="large"/><Typography.Title>History</Typography.Title></Flex>}
     footer={(_) => (<></>)} 
     open={sessionData} 
     width={"75%"} 
     onCancel={() => {closeModal(); refreshTable()}} 
     mask={{blur: true}}
     destroyOnHidden
+    getContainer={false}
+    className="modal"
     >
+      <Flex gap={"small"} vertical>
       <Button onClick={() => navigate(`${sessionData.id}/create/`)}>Create</Button>
       <ViewTable urls={`${URL_CLASSROOM.COURSE}${sessionData?.id}/sessions/`} columns={col} refresh={refresh}/>
+      </Flex>
     </Modal>
   )
 }

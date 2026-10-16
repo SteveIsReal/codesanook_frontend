@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Form, Input, Modal, Button, Space, Card, message, Upload } from 'antd'
+import { Form, Input, Modal, Button, Space, Card, message, Upload,Flex } from 'antd'
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
 import axios from 'axios'
 import { URL_CLASSROOM } from '../constants/urls';
@@ -52,9 +52,12 @@ export default function CurriculumModal(props){
     onCancel={props.cancel} 
     onOk={Submit}
     mask={{blur: true}}
+    width={"75%"}
+    title={<h1>{props.isCreateCurriculum ? "Create" : "Edit"} Curriculum</h1>}
+    className="modal"
     >
         {contentHolder}
-        <h2>{props.isCreateCurriculum ? "Create" : "Edit"} Curriculum</h2>
+        
         <Form form={form}>
             <Form.Item label="Name" name="name" rules={[{required:true, message:"Please add name"}]}>
                 <Input />
@@ -62,6 +65,12 @@ export default function CurriculumModal(props){
             <Form.List name="subjects">
                 {(fields, {add, remove}) => (
                     <>
+                    <Form.Item>
+                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                        Add Subject
+                        </Button>
+                    </Form.Item>
+                    <Flex wrap gap="small">
                     {fields.map(({key, name, ...restField}) => (
                             <Card key={key} >
                             <Form.Item {...restField} name={[name, "id"]} hidden>
@@ -84,11 +93,7 @@ export default function CurriculumModal(props){
                             </Card>
 
                     ))}
-                    <Form.Item>
-                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                        Add Subject
-                        </Button>
-                    </Form.Item>
+                    </Flex>
                     </>
                 )}
             </Form.List>

@@ -87,7 +87,7 @@ export default function ViewTimeModal(props) {
         Back
       </Button>
     } 
-    closeIcon={false} 
+    onCancel={props.onCancel}
     getContainer={false} 
     width={"75%"} 
     mask={{blur: true}} 
@@ -102,14 +102,6 @@ export default function ViewTimeModal(props) {
     >
       <Flex vertical gap="small">
         <Flex gap="small">
-          {/* <Button 
-          icon={<AddCircleOutlineOutlined fontSize="small"/>} 
-          onClick={() => props.setIsCreateSchedule(true)} 
-          type="dashed" 
-          block
-          >
-            Schedule
-          </Button> */}
           <Button 
           icon={<AddCircleOutlineOutlined fontSize="small"/>} 
           onClick={() => setIsCreateTimeSlot(true)} 

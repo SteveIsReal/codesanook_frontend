@@ -80,7 +80,7 @@ export default function ViewTimeModal(props) {
         Back
       </Button>
     } 
-    closeIcon={false} 
+    onCancel={props.onCancel}
     getContainer={false} 
     width={"75%"} 
     mask={{blur: true}} 

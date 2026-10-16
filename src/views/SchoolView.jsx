@@ -57,7 +57,9 @@ export default function SchoolView() {
       </Flex>
     </Flex>
     <SchoolModal editSchoolData={editSchoolData} isCreateSchool={isCreateSchool} onCancel={onCancel}/>
+    <Flex vertical className="card">
     <ViewTable urls={URL_MEMBER.SCHOOL} columns={schoolColumn} refresh={refresh} loading={loading}/>
+    </Flex>
     </>
   )
 }
