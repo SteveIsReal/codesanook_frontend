@@ -27,9 +27,9 @@ export default function AttendanceView() {
   const courseColumn = [
     {title: "Name", dataIndex: "name", key:"name"},
     {title: "Curriculum", dataIndex: "curriculum_name", key:"curriculum"},
-    {title: "Time slot", dataIndex: "display_time_slot", render: (data) => (
+    {title: "Time slot", dataIndex: "time_slot_obj", render: (data) => (
       <ul>
-        {data.map(d => (<li>{d}</li>))}
+        {data.map(d => (<li>{d.display_time_slot}</li>))}
       </ul>
     )},
     {title: "Students", dataIndex: "students_obj", render: (data) => (

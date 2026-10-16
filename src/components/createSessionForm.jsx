@@ -61,7 +61,7 @@ export default function CreateSessionForm({courseId, sessionId, sessionForm}){
   useEffect(() => {
     if (courseData){
       setTimeSlotData(courseData.time_slots.map((d, index) => ({
-        label: courseData.display_time_slot[index],
+        label: courseData.time_slot_obj[index].display_time_slot,
         value: d,
       })))
 

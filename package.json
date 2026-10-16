@@ -16,6 +16,7 @@
     "@mui/icons-material": "^9.4.0",
     "@mui/material": "^9.4.0",
     "antd": "^6.4.2",
+    "antd-phone-input": "^0.3.20",
     "axios": "^1.16.1",
     "dayjs": "^1.11.21",
     "react": "^19.2.6",

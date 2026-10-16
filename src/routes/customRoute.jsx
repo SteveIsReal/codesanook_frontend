@@ -38,6 +38,9 @@ export default function CustomRoute() {
     <Routes>
       <Route path={`/${PATH.LOGIN}`} element={<LoginPage />} />
       <Route path={`/${PATH.REGISTER_LEAD}`} element={<RegisterLeadPage/>}/>
+      <Route element={<ProtectedRoute allowedGroup={["admin"]}/>}>
+        <Route path={`/${PATH.REGISTER_LEAD}/:leadId`} element={<RegisterLeadPage/>}/>
+      </Route>
       <Route path="/" element={<MenuPage />}>
         <Route element={<ProtectedRoute allowedGroup={["admin"]}/>}>
           <Route path={PATH.STUDENT} element={<StudentView />} />

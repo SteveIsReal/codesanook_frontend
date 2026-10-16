@@ -1,15 +1,15 @@
-import React, { Children, use, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import axios from "axios"
-import { Table, Button, Space, Typography, Tag, Flex} from "antd"
+import { Button, Space, Typography, Tag, Flex} from "antd"
 import CourseModal from "../components/CourseModal"
 import ViewTimeModal from "../components/ViewTimeModal"
-import dayjs from "dayjs"
 import { URL_CLASSROOM, URL_MEMBER } from "../constants/urls"
-import SelectTimeModal from "../components/SelectTimeModal";
+import ViewScheduleModal from "../components/ViewScheduleModal"
 import ViewTable from "../components/ViewTable";
 import Search from "antd/es/input/Search";
 import "../styles/table.css"
-import { AddCircleOutlineOutlined, Edit, Schedule } from "@mui/icons-material";
+import { AddCircleOutlineOutlined, Edit, Schedule, TableRowsOutlined, TabletOutlined } from "@mui/icons-material";
+import useMessage from "antd/es/message/useMessage";
 
 export default function CourseView(){
 
@@ -22,7 +22,9 @@ export default function CourseView(){
     const [editCourseData, setEditCourseData] = useState(null)
     const [isCreateCourse, setIsCreateCourse] = useState(false)
     const [isViewTimeSlot, setIsViewTimeSlot] = useState(false)
+    const [isViewSchedule, setIsViewSchedule] = useState(false)
     const [filter, setFilter] = useState(null)
+    const [messageApi, holder] = useMessage()
 
     const refreshTable = () => {
         setRefresh(refresh + 1)
@@ -54,8 +56,8 @@ export default function CourseView(){
     }
 
     const fetchTimeSlot = async () => {
-        const response = await axios.get(URL_CLASSROOM.TIMESLOT)
-        const map_data = response.data.results.map(d => ({'value': d.id, 'label': `${d.start_time}-${d.end_time} on ${d.weekday.toLowerCase()} at ${d.room_name}`}))
+        const response = await axios.get(URL_CLASSROOM.TIMESLOT_NO_PAGINATION)
+        const map_data = response.data.map(d => ({'value': d.id, 'label': `${d.schedule_object.start_time}-${d.schedule_object.end_time} on ${d.schedule_object.weekday.toLowerCase()} at ${d.room_name}`}))
         setTimeSlotTableData(map_data)
     }
 
@@ -100,7 +102,7 @@ export default function CourseView(){
                 {data.length > 0 ? data.map((d) => <li>
                     <Flex gap="small" style={{margin:8}}>
                         <Typography.Text>
-                            {d.start_time.slice(0,5)} - {d.end_time.slice(0,5)} {d.weekday[0]}{d.weekday.slice(1).toLowerCase()}
+                            {d?.schedule_object?.start_time.slice(0,5)} - {d?.schedule_object?.end_time.slice(0,5)} {d?.schedule_object?.weekday[0]}{d?.schedule_object?.weekday?.slice(1).toLowerCase()}
                         </Typography.Text>
                         <Tag color={"gray"}>
                             {d.room_name}
@@ -139,18 +141,14 @@ export default function CourseView(){
         fetchTimeSlot() 
     }, [refresh])
 
-    // useEffect(() => {
-    //     if (isCreateCourse || editCourseData === null){
-    //         refreshTable()
-    //     }
-    // }, [isCreateCourse, editCourseData])
-
     return (
     <>
+        {holder}
         <Flex vertical size={"middle"} gap={"medium"} className="card">
             <Flex style={{justifyContent: "space-between", alignItems: "center"}}>
                 <Typography.Title>Course</Typography.Title>
                 <Flex gap={"small"}>
+                    <Button onClick={() => setIsViewSchedule(true)} icon={<TableRowsOutlined fontSize="small" />} size="large">Schedule</Button>
                     <Button onClick={() => setIsViewTimeSlot(true)} icon={<Schedule fontSize="small" />} size="large">Time Slot</Button>
                     <Button onClick={() => setIsCreateCourse(true)} icon={<AddCircleOutlineOutlined fontSize="small"/>} size="large" type="primary">Create Course</Button>
                 </Flex>
@@ -170,7 +168,8 @@ export default function CourseView(){
         closeModal={closeCourseModal}
         curriculum={curriculum}
         />
-        <ViewTimeModal refreshTable={refreshTable} roomData={roomData} isViewTimeSlot={isViewTimeSlot} onCancel={closeTimeModal}/>
+        <ViewTimeModal refreshTable={refreshTable} roomData={roomData} isViewTimeSlot={isViewTimeSlot} onCancel={closeTimeModal} messageApi={messageApi}/>
+        <ViewScheduleModal refreshTable={refreshTable} isViewSchedule={isViewSchedule} onCancel={() => setIsViewSchedule(false)} messageApi={messageApi}/>
         
     </>
     )

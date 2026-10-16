@@ -6,6 +6,7 @@ import { URL_TOKEN } from '../constants/urls';
 import { PATH } from '../routes/CustomRoute';
 import useAuth from '../context/authContext';
 
+// axios.defaults.baseURL = 'http://172.30.0.11:8000'
 axios.defaults.baseURL = 'http://localhost:8000'
 
 export default function LoginPage () {

@@ -12,8 +12,8 @@ export default function LeadModal(props) {
     const [form] = Form.useForm()
     const [loading, setLoading] = useState(false)
 
-    const cancel = () => {
-        props.onCancel()
+    const cancel = (update) => {
+        props.onCancel(update)
     }
 
     const Submit = async () => { 
@@ -27,7 +27,7 @@ export default function LeadModal(props) {
         else{
             const response = await axios.patch(`${URL_MEMBER.LEAD}${props.editLeadData.id}/`, formData)
         }
-        cancel()
+        cancel(true)
       } catch (err) {
         console.error(err)
       } finally {
@@ -45,7 +45,7 @@ export default function LeadModal(props) {
     <Modal 
     open={props.isCreateLead || props.editLeadData} 
     onOk={Submit} 
-    onCancel={cancel} 
+    onCancel={() => cancel(false)} 
     afterClose={form.resetFields} 
     getContainer={false}
     mask={{blur: true}}

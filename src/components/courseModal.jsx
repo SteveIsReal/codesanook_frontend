@@ -44,6 +44,7 @@ export default function CourseModal(props){
     onOk={onSubmit}
     getContainer={false}
     mask={{blur: true}}
+    width={"75%"}
     loading={loading}
     >
         {contextHolder}

@@ -9,15 +9,15 @@ import { EditSquare, DeleteOutlined, ModeEditOutlineOutlined, AddCircleOutlineOu
 import "../styles/modal.css"
 
 
-const WEEKDAYS = [
-  { value: "MONDAY", label: "Monday" },
-  { value: "TUESDAY", label: "Tuesday" },
-  { value: "WEDNESDAY", label: "Wednesday" },
-  { value: "THURSDAY", label: "Thursday" },
-  { value: "FRIDAY", label: "Friday" },
-  { value: "SATURDAY", label: "Saturday" },
-  { value: "SUNDAY", label: "Sunday" },
-];
+const WEEKDAY_COLOR = {
+  MONDAY: "#fffcd6",
+  TUESDAY: "#ffd6fe",
+  WEDNESDAY: "#d6ffe0",
+  THURSDAY: "#ffebd6",
+  FRIDAY: "#d6f5ff",
+  SATURDAY: "#f1d6ff",
+  SUNDAY: "#ffd6d6"
+}
 
 export default function ViewTimeModal(props) {
   const [form] = Form.useForm();
@@ -29,27 +29,31 @@ export default function ViewTimeModal(props) {
     setRefresh(refresh + 1)
   }
   
-  const closeEditTimeSlot = () => {
+  const closeEditTimeSlot = (update = false) => {
     setIsCreateTimeSlot(false)
     setEditTimeSlotData(null)
-    props.refreshTable()
+    update && refreshTable()
   }
 
   const deleteTimeSlot = async (id) => {
     await axios.delete(`${URL_CLASSROOM.TIMESLOT}${id}/`)
-    refreshTable()
+    refreshTable(true)
   }
 
   const timeSlotColumns = [
-    {title: "Start time", dataIndex: "start_time", key: "start_time"},
-    {title: "End time", dataIndex: "end_time", key:"end_time"},
-    {title: "Weekday", dataIndex: "weekday", key:"weekday", render: (data) => (
-      <Tag color={"#d6e3ff"} variant="solid" style={{color:"black", fontWeight: 'bold'}}>{data}</Tag>
+    {title: "Start time", dataIndex: "schedule_object", key: "start_time", render: (d) => (
+      <Typography>{d.start_time}</Typography>
+    )},
+    {title: "End time", dataIndex: "schedule_object", key:"end_time", render: (d) => (
+      <Typography>{d.end_time}</Typography>
+    )},
+    {title: "Weekday", dataIndex: "schedule_object", key:"weekday", render: (d) => (
+      <Tag color={WEEKDAY_COLOR?.[d.weekday]} variant="solid" style={{color:"black", fontWeight: 'bold'}}>{d.weekday}</Tag>
     )},
     {title: "Room", dataIndex: "room_name", key:"room_name"},
     {title: "Action", key: "action", render: (_, record) => (
       <Space>
-        <Button icon={<ModeEditOutlineOutlined fontSize="small"/>} onClick={() => setEditTimeSlotData(record)}/>
+        <Button icon={<ModeEditOutlineOutlined fontSize="small"/>} onClick={() => {setEditTimeSlotData(record); console.log(record)}}/>
         <Popconfirm
         title="Delete time"
         description="This will effect your existed course."
@@ -64,12 +68,18 @@ export default function ViewTimeModal(props) {
   
   useEffect(() => {
     refreshTable()
-  }, [props.isViewTimeSlot, isCreateTimeSlot, editTimeSlotData])
+  }, [props.isViewTimeSlot])
 
 
   return (
     <>
-    <EditTimeModal roomData={props.roomData} closeEditTimeSlot={closeEditTimeSlot} isCreateTimeSlot={isCreateTimeSlot} editTimeSlotData={editTimeSlotData} />
+    <EditTimeModal 
+    roomData={props.roomData} 
+    closeEditTimeSlot={closeEditTimeSlot} 
+    isCreateTimeSlot={isCreateTimeSlot} 
+    editTimeSlotData={editTimeSlotData} 
+    messageApi={props.messageApi}
+    />
     <Modal 
     open={props.isViewTimeSlot} 
     footer={
@@ -91,14 +101,24 @@ export default function ViewTimeModal(props) {
     className="modal"
     >
       <Flex vertical gap="small">
-      <Button 
-      icon={<AddCircleOutlineOutlined fontSize="small"/>} 
-      onClick={() => setIsCreateTimeSlot(true)} 
-      type="dashed" 
-      block
-      >
-        Add time slot
-      </Button>
+        <Flex gap="small">
+          {/* <Button 
+          icon={<AddCircleOutlineOutlined fontSize="small"/>} 
+          onClick={() => props.setIsCreateSchedule(true)} 
+          type="dashed" 
+          block
+          >
+            Schedule
+          </Button> */}
+          <Button 
+          icon={<AddCircleOutlineOutlined fontSize="small"/>} 
+          onClick={() => setIsCreateTimeSlot(true)} 
+          type="dashed" 
+          block
+          >
+            Time slot
+          </Button>
+        </Flex>
       <ViewTable urls={URL_CLASSROOM.TIMESLOT} columns={timeSlotColumns} refresh={refresh}/>
       </Flex>
     </Modal>

@@ -21,3 +21,12 @@
 # Add loading to modal
 # No need to refersh everytime modal close
 # Check avaliable time slot
+
+
+
+14/10
+
+Separate TimeSlot from Room
+TimeSlot M2M Room
+Fetch on Modal open
+Rebunch on search in modal
