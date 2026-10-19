@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { Button, Form, Modal, Popconfirm, Space, Tag, Flex, Typography} from "antd";
+import { Button, Form, Modal, Popconfirm, Space, Tag, Flex, Typography, Select, TimePicker, Divider} from "antd";
 import { useSearchParams } from "react-router";
 import axios from 'axios'
 import { URL_CLASSROOM } from "../constants/urls";
 import EditScheduleModal from "./EditScheduleModal";
 import ViewTable from "./ViewTable";
-import { EditSquare, DeleteOutlined, ModeEditOutlineOutlined, AddCircleOutlineOutlined, WarningRounded, DangerousRounded, Schedule } from "@mui/icons-material";
+import { EditSquare, DeleteOutlined, ModeEditOutlineOutlined, AddCircleOutlineOutlined, WarningRounded, DangerousRounded, Schedule, Search } from "@mui/icons-material";
 import "../styles/modal.css"
+import { WEEKDAYS } from "../constants/const_string";
+import dayjs from "dayjs"
 
 
 const WEEKDAY_COLOR = {
@@ -22,7 +24,11 @@ const WEEKDAY_COLOR = {
 export default function ViewTimeModal(props) {
   const [editScheduleData, setEditScheduleData] = useState(null)
   const [isCreateSchedule, setIsCreateSchedule] = useState(false)
+  const [startTimeFilter, setStartTimeFilter] = useState(null)
+  const [endTimeFilter, setEndTimeFilter] = useState(null)
+  const [weekdayFilter, setWeekdayFilter] = useState("")
   const [refresh, setRefresh] = useState(0)
+  const [form] = Form.useForm()
 
   const refreshTable = () => {
     setRefresh(refresh + 1)
@@ -37,6 +43,14 @@ export default function ViewTimeModal(props) {
   const deleteSchedule = async (id) => {
     await axios.delete(`${URL_CLASSROOM.SCHEDULE}${id}/`)
     refreshTable(true)
+  }
+
+  const onFilterChange = async () => {
+    const formData = form.getFieldsValue()
+    setStartTimeFilter(formData?.time?.[0] ? dayjs(formData.time[0]).format("HH:mm") : null)
+    setEndTimeFilter(formData?.time?.[1] ? dayjs(formData.time[1]).format("HH:mm") : null)
+    setWeekdayFilter(formData?.weekday)
+    refreshTable()
   }
 
   const ScheduleColumns = [
@@ -62,6 +76,7 @@ export default function ViewTimeModal(props) {
   
   useEffect(() => {
     refreshTable()
+    form.resetFields()
   }, [props.isViewSchedule])
 
 
@@ -93,8 +108,8 @@ export default function ViewTimeModal(props) {
     }
     className="modal"
     >
-      <Flex vertical gap="small">
-        <Flex gap="small">
+      <Flex vertical gap="small" align="stretch">
+        <Flex gap="small" vertical>
           <Button 
           icon={<AddCircleOutlineOutlined fontSize="small"/>} 
           onClick={() => setIsCreateSchedule(true)} 
@@ -104,7 +119,23 @@ export default function ViewTimeModal(props) {
             Schedule
           </Button>
         </Flex>
-      <ViewTable urls={URL_CLASSROOM.SCHEDULE} columns={ScheduleColumns} refresh={refresh}/>
+        <Form form={form}>
+        <Flex gap="small" justify="strecth" align="center">
+          <Form.Item>
+            <Typography style={{whiteSpace: "nowrap"}}>Filters : </Typography>
+          </Form.Item>
+          <Form.Item name="time" style={{width:"100%"}}>
+            <TimePicker.RangePicker style={{width:"100%"}} format={"HH:mm"}/>
+          </Form.Item>
+          <Form.Item name="weekday" style={{width:"100%"}}>
+            <Select style={{width:"100%"}} options={WEEKDAYS} placeholder="Select weekday" allowClear/>
+          </Form.Item>
+          <Form.Item>
+            <Button icon={<Search/>} onClick={onFilterChange}/>
+          </Form.Item>
+        </Flex>
+        </Form>
+      <ViewTable urls={`${URL_CLASSROOM.SCHEDULE}?weekdays=${weekdayFilter ?? ""}&start_time=${startTimeFilter ?? ""}&end_time=${endTimeFilter ?? ""}`} columns={ScheduleColumns} refresh={refresh} search={true}/>
       </Flex>
     </Modal>
     </>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input, message, Flex } from 'antd';
 import { useNavigate } from 'react-router';
 import axios from 'axios'
 import { URL_TOKEN } from '../constants/urls';
@@ -45,6 +45,7 @@ export default function LoginPage () {
     };
 
     return(
+    <Flex vertical style={{alignItems: 'center'}} className="card">
     <Form
         name="basic"
         // labelCol={{ span: 8 }}
@@ -78,5 +79,6 @@ export default function LoginPage () {
         </Button>
         </Form.Item>
     </Form>
+    </Flex>
     );
 }

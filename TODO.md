@@ -36,3 +36,10 @@ Can teacher check student remain credit
 filter time slot
 add student page in course
 Upgrade register form
+
+19/10
+
+toggle to deselect timeslot
+
+# iyht
+  - Create new model to store time_slot with course to able to look back in history
