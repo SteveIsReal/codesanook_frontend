@@ -1,5 +1,5 @@
 import React from 'react'
-import CustomRoute from './routes/customRoute';
+import CustomRoute from './routes/CustomRoute';
 import {ConfigProvider} from 'antd'
 import "./app.css"
 

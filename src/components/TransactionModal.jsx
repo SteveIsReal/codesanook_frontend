@@ -1,6 +1,6 @@
 import { Modal, Table, Space, Typography } from "antd"
 import React, { useEffect, useState } from "react"
-import ViewTable from "./viewTable";
+import ViewTable from "./ViewTable";
 import { URL_MEMBER } from "../constants/urls";
 import "../styles/modal.css"
 import { SwapHorizOutlined } from "@mui/icons-material";

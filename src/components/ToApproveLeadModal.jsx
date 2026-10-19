@@ -1,5 +1,5 @@
 import { Modal, Space, Input, Flex, Popconfirm, Typography, Button } from "antd";
-import ViewTable from "./viewTable";
+import ViewTable from "./ViewTable";
 import { URL_MEMBER } from "../constants/urls";
 import "../styles/modal.css"
 import { useEffect, useState } from "react";
